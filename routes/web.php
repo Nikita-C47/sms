@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users/{id?}/edit', 'UsersController@edit')->name('edit-user');
     Route::post('/admin/users/{id?}/edit', 'UsersController@update');
     Route::post('/admin/users/{id?}/delete', 'UsersController@destroy')->name('delete-user');
+    Route::post('/admin/users/{id?}/auth', 'UsersController@auth')->name('auth');
 
     Route::get('/events/trashed', 'EventsController@indexTrashed')->name('events-trashed');
     Route::post('/events/{id?}/restore', 'EventsController@restore')->name('event-restore');
@@ -77,7 +78,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout-get');
 
-    Route::post('/events/search', 'EventsController@findById')->name('search-event');
+    Route::get('/events/search', 'EventsController@search')->name('search-event');
+    Route::post('/events/search', 'EventsController@find')->name('find-event');
     Route::post('/events/get-categories', 'EventsController@getEventCategories')->name('get-event-categories');
     Route::post('/events/get-flights', 'EventsController@getFlights')->name('get-flights');
     Route::get('/events/create', 'EventsController@create')->name('create-event');

@@ -77,9 +77,11 @@
                         <td>
                             @if(filled($event->created_by))
                                 {{ $event->user_created_by->name }}
-                                <br>
+                            @else
+                                Анонимно
                             @endif
-                            ({{ $event->created_at->format('d.m.Y H:i:s') }})
+                            <br>
+                            {{ $event->created_at->format('d.m.Y H:i:s') }}
                         </td>
                     </tr>
                 @endforeach

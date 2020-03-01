@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Notifications\UserCredentials;
 use App\User;
 use App\Components\Helpers\PasswordHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -135,5 +136,14 @@ class UsersController extends Controller
             'type' => 'success',
             'text' => 'Пользователь "'.$user->name.'" успешно удалён!'
         ]);
+    }
+
+    public function auth($id)
+    {
+        $user = User::findOrFail($id);
+
+        Auth::login($user);
+
+        return redirect()->route('home');
     }
 }

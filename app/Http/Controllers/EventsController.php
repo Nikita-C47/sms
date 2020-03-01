@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\Services\EventUpdatedNotifier;
 use App\Events\ResponsibleDepartmentAdded;
 use App\Events\ResponsibleDepartmentRemoved;
 use App\Http\Requests\Events\AnonymousEventFormRequest;
@@ -11,7 +10,6 @@ use App\Http\Requests\Events\FindEventFormRequest;
 use App\Http\Requests\Events\FlightsFormRequest;
 use App\Http\Requests\Events\EventFormRequest;
 use App\Http\Requests\Events\ProcessEventFormRequest;
-use App\Jobs\SendEventNotificationsJob;
 use App\Models\Department;
 use App\Models\Events\Event;
 use App\Models\Events\EventAttachment;
@@ -24,13 +22,10 @@ use App\Models\Flight;
 use App\Notifications\EventProcessed;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
@@ -96,7 +91,12 @@ class EventsController extends Controller
         ]);
     }
 
-    public function findById(FindEventFormRequest $request)
+    public function search()
+    {
+        return view('events.search.form');
+    }
+
+    public function find(FindEventFormRequest $request)
     {
         /** @var User $user */
         $user = Auth::user();
@@ -125,7 +125,7 @@ class EventsController extends Controller
             }
         }
 
-        return view('events.search', [
+        return view('events.search.results', [
             'id' => $id,
             'event' => $event
         ]);

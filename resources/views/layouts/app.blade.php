@@ -42,17 +42,19 @@
                     <a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="ti-menu"></i></a>
                 </li>
                 @auth
-                <li>
-                    <form class="navbar-search" method="post" action="{{ route('search-event') }}">
+                <li class="d-sm-none d-none d-lg-inline d-md-inline d-xl-inline">
+                    <form class="navbar-search" method="post" action="{{ route('find-event') }}">
                         <div class="rel">
                             <span class="search-icon"><i class="ti-search"></i></span>
                             <input class="form-control" placeholder="Номер события..." name="query">
                         </div>
                     </form>
                 </li>
-                @error('query')
-                    @include('widgets.notification', ['alert' => ['type' => 'danger', 'text' => $message]])
-                @enderror
+                @unless(Route::currentRouteName() === 'search-event')
+                    @error('query')
+                        @include('widgets.notification', ['alert' => ['type' => 'danger', 'text' => $message]])
+                    @enderror
+                @endunless
                 @endauth
             </ul>
             <!-- END TOP-LEFT TOOLBAR-->
@@ -101,8 +103,8 @@
                         <a href="{{ route('home') }}">
                             <i class="sidebar-item-icon fas fa-list-alt"></i>
                             <span class="nav-label">
-                            Список событий
-                        </span>
+                                Список событий
+                            </span>
                         </a>
                     </li>
                 @if(Gate::allows('manager'))
@@ -181,6 +183,14 @@
                         </ul>
                     </li>
                 @endif
+                    <li class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                        <a href="{{ route('search-event') }}">
+                            <i class="sidebar-item-icon fas fa-search"></i>
+                            <span class="nav-label">
+                                Поиск события
+                            </span>
+                        </a>
+                    </li>
                 @endauth
             </ul>
         </div>
