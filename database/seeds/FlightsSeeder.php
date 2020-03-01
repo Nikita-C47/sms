@@ -50,9 +50,10 @@ class FlightsSeeder extends Seeder
             "Сидоров Сидр Сидорович"
         ];
         // Конечная дата будет сегодняшний день
-        $finishDate = now();
+        $finishDate = now()->startOfDay();
         // Начальная - за 2 недели до текущей
         $startDate = new Carbon('-2 weeks');
+        $startDate->startOfDay();
         // Заводим цикл
         while($startDate->lessThanOrEqualTo($finishDate)) {
             // Номер рейса

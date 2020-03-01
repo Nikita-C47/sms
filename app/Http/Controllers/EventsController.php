@@ -386,9 +386,7 @@ class EventsController extends Controller
                     // Добавляем новое подразделение
                     $newResponsibleDepartment = new EventResponsibleDepartment([
                         'event_id' => $event->id,
-                        'department_id' => $departmentId,
-                        // TODO: Возможно стоит упразднить этот столбец
-                        'created_by' => Auth::user()->getAuthIdentifier()
+                        'department_id' => $departmentId
                     ]);
                     $newResponsibleDepartment->save();
                 }

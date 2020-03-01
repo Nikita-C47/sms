@@ -40,7 +40,7 @@
                         v-model="flight_id">
                     <option value="">- Укажите рейс -</option>
                     <option v-for="flight in flights" :value="flight.id">
-                        {{ flight.departure_airport }} - {{ flight.arrival_airport }} ({{ flight.number }}, {{ flight.departure_date}})
+                        {{ flight.departure_airport }} - {{ flight.arrival_airport }} ({{ flight.number }}, {{ flight.board }}, {{ flight.departure_date}})
                     </option>
                 </select>
                 <div v-if="hasError('flight_id')" class="invalid-feedback">
