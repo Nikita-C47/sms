@@ -10,7 +10,7 @@
             <input type="text"
                    name="name"
                    id="name"
-                   class="form-control input-solid @error('name') is-invalid @enderror"
+                   class="form-control @error('name') is-invalid @enderror"
                    value="{{ old('name') }}">
             @error('name')
             <span class="invalid-feedback" role="alert">

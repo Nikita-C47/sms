@@ -16,7 +16,7 @@
         </a>
         <hr>
         <div class="table-responsive">
-            <table class="table table-bordered-bd-primary table-hover">
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Номер</th>
                     <th>Дата</th>
@@ -37,11 +37,9 @@
                         <td>{{ $event->date->format('d.m.Y') }}</td>
                         <td>
                             @if(count($event->responsible_departments) > 0)
-                                <div class="py-3">
-                                    @foreach($event->responsible_departments as $responsibleDepartment)
-                                        <div>{{ $responsibleDepartment->name }}</div>
-                                    @endforeach
-                                </div>
+                                @foreach($event->responsible_departments as $responsibleDepartment)
+                                    <div>{{ $responsibleDepartment->name }}</div>
+                                @endforeach
                             @else
                                 <i class="fas fa-times text-danger"></i>
                             @endif
@@ -49,6 +47,7 @@
                         <td>
                             @if(filled($event->flight_id))
                                 <a tabindex="0" data-placement="right" data-toggle="popover" data-trigger="focus"
+                                   class="text-primary"
                                    title="Рейс {{ $event->flight->number }}"
                                    data-html="true"
                                    data-content="@include('partial.flight-popover-info', ['flight' => $event->flight])">

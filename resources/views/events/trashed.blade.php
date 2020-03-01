@@ -9,7 +9,7 @@
         </div>
     @else
         <div class="table-responsive">
-            <table class="table table-bordered-bd-primary table-hover">
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Номер</th>
                     <th>Дата</th>
@@ -88,8 +88,8 @@
                                 <div class="modal fade" id="eventRestoreModal" tabindex="-1" role="dialog" aria-labelledby="eventRestoreModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="eventDeleteModalLabel">Восстановить событие</h5>
+                                            <div class="modal-header p-0">
+                                                <h5 class="modal-title pt-3 pl-3" id="eventDeleteModalLabel">Восстановить событие</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -122,8 +122,8 @@
                                 <div class="modal fade" id="eventDestroyModal" tabindex="-1" role="dialog" aria-labelledby="eventDestroyModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="eventDestroyModalLabel">Удалить событие безвозвратно</h5>
+                                            <div class="modal-header p-0">
+                                                <h5 class="modal-title pt-3 pl-3" id="eventDestroyModalLabel">Удалить событие безвозвратно</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -132,9 +132,9 @@
                                                 <div class="text-wrap">
                                                     <span class="text-danger">ВНИМАНИЕ!</span>
                                                     <span>
-                                                                        Вы действительно хотите безвозвратно удалить событие №{{ $event->id }}?
-                                                                        Событие будет удалено из базы данных и его невозможно будет восстановить.
-                                                                    </span>
+                                                        Вы действительно хотите безвозвратно удалить событие №{{ $event->id }}?
+                                                        Событие будет удалено из базы данных и его невозможно будет восстановить.
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

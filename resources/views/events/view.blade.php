@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-6 col-sm-12">
-            <table class="table table-bordered-bd-primary table-hover">
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Номер</th>
                     <td>{{ $event->id }}</td>
@@ -153,7 +153,7 @@
             </table>
         </div>
         <div class="col-lg-6 col-sm-12">
-            <table class="table table-bordered-bd-primary table-hover">
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Выявленная причина</th>
                     <td>@include('widgets.filled-or-none', ['value' => $event->reason])</td>
@@ -176,11 +176,9 @@
                     <th>Ответственные подразделения</th>
                     <td>
                         @if(count($event->responsible_departments) > 0)
-                            <div class="py-3">
-                                @foreach($event->responsible_departments as $responsibleDepartment)
-                                    <div>{{ $responsibleDepartment->name }}</div>
-                                @endforeach
-                            </div>
+                            @foreach($event->responsible_departments as $responsibleDepartment)
+                                <div>{{ $responsibleDepartment->name }}</div>
+                            @endforeach
                         @else
                             <i class="fas fa-times text-danger"></i>
                         @endif
@@ -191,7 +189,7 @@
                     <td>
                         @if(count($event->measures) > 0)
                             @foreach($event->measures as $measure)
-                                <div class="card my-3">
+                                <div class="card border-primary">
                                     <div class="card-header bg-primary text-light">
                                         Мероприятие №{{ $loop->iteration }}
                                     </div>
@@ -200,7 +198,7 @@
                                             {{ $measure->text }}
                                         </p>
                                     </div>
-                                    <div class="card-footer text-muted">
+                                    <div class="card-footer border-primary text-muted">
                                         {{ $event->user_created_by->name }} ({{ $event->created_at->format('d.m.Y H:i:s') }})
                                     </div>
                                 </div>
@@ -214,15 +212,13 @@
                     <th>Прикрепленные файлы</th>
                     <td>
                         @if(count($event->attachments) > 0)
-                            <div class="py-3">
-                                @foreach($event->attachments as $attachment)
-                                    <div>
-                                        <a href="{{ $attachment->link }}" target="_blank">
-                                            {{ $attachment->original_name }} ({{ $attachment->size_text }})
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
+                            @foreach($event->attachments as $attachment)
+                                <div>
+                                    <a href="{{ $attachment->link }}" target="_blank">
+                                        {{ $attachment->original_name }} ({{ $attachment->size_text }})
+                                    </a>
+                                </div>
+                            @endforeach
                         @else
                             <i class="fas fa-times text-danger"></i>
                         @endif

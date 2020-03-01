@@ -5,7 +5,7 @@
 @section('content')
     @if(filled($event))
         <div class="table-responsive">
-            <table class="table table-bordered-bd-primary table-hover">
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Номер</th>
                     <th>Дата</th>

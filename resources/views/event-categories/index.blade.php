@@ -7,7 +7,7 @@
         Добавить
     </a>
     <hr>
-    <table class="table table-bordered-bd-primary table-hover">
+    <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>#</th>

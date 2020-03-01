@@ -10,7 +10,7 @@
             <input type="text"
                    name="name"
                    id="name"
-                   class="form-control input-solid @error('name') is-invalid @enderror"
+                   class="form-control @error('name') is-invalid @enderror"
                    value="{{ old('name') }}">
             @error('name')
             <span class="invalid-feedback" role="alert">
@@ -23,7 +23,7 @@
             <input type="text"
                    name="email"
                    id="email"
-                   class="form-control input-solid @error('email') is-invalid @enderror"
+                   class="form-control @error('email') is-invalid @enderror"
                    value="{{ old('email') }}">
             @error('email')
             <span class="invalid-feedback" role="alert">
@@ -36,7 +36,7 @@
             <select id="access_level"
                     name="access_level"
                     aria-describedby="rolesHelp"
-                    class="form-control input-solid @error('access_level') is-invalid @enderror">
+                    class="form-control @error('access_level') is-invalid @enderror">
                 <option value="">- Укажите уровень доступа -</option>
                 @foreach($roles as $code => $name)
                     <option value="{{ $code }}" @if($code == old('access_level')) selected @endif>
@@ -63,7 +63,7 @@
             <label for="department_id">Подразделение:</label>
             <select id="department_id"
                     name="department_id"
-                    class="form-control input-solid @error('department_id') is-invalid @enderror">
+                    class="form-control @error('department_id') is-invalid @enderror">
                 <option value="">- Укажите подразделение -</option>
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>

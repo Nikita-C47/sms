@@ -13,7 +13,7 @@
                    readonly
                    name="date"
                    id="date"
-                   class="form-control input-solid @error('date') is-invalid @enderror"
+                   class="form-control @error('date') is-invalid @enderror"
                    value="{{ old('date') }}">
             <event-datepicker v-bind:field="'date'"></event-datepicker>
             @error('date')
@@ -27,7 +27,7 @@
             <input type="text"
                    name="airport"
                    id="airport"
-                   class="form-control input-solid @error('airport') is-invalid @enderror"
+                   class="form-control @error('airport') is-invalid @enderror"
                    value="{{ old('airport') }}">
             @error('airport')
             <span class="invalid-feedback" role="alert">
@@ -40,7 +40,7 @@
             <input type="text"
                    name="initiator"
                    id="initiator"
-                   class="form-control input-solid @error('initiator') is-invalid @enderror"
+                   class="form-control @error('initiator') is-invalid @enderror"
                    value="{{ old('initiator') }}">
             @error('initiator')
             <span class="invalid-feedback" role="alert">
@@ -53,7 +53,7 @@
                 Сообщение: <span class="text-danger">*</span>
             </label>
             <textarea rows="6"
-                      class="form-control input-solid"
+                      class="form-control"
                       id="message"
                       name="message"
                       placeholder="Опишите случившееся событие"></textarea>
@@ -68,7 +68,7 @@
                 Комментарий:
             </label>
             <textarea rows="6"
-                      class="form-control input-solid"
+                      class="form-control"
                       id="commentary"
                       name="commentary"
                       placeholder="Опишите случившееся событие"></textarea>

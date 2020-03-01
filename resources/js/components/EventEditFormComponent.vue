@@ -190,16 +190,18 @@
                         </ul>
                     </div>
                 </div>
-                <div v-if="form_data.attachments.length > 0" class="text-info">
+                <div v-if="form_data.attachments.length > 0">
                     <label class="font-weight-bold mt-3">
                         Открепить файлы:
                     </label>
                     <br>
-                    <i class="fas fa-info-circle"></i> Файлы будут откреплены от события только после его сохранения.
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle"></i> Файлы будут откреплены от события только после его сохранения.
+                    </div>
                 </div>
                 <div class="row mt-2">
                     <div v-for="attachment in form_data.attachments" class="col-lg-6 col-sm-12">
-                        <div class="card mb-3">
+                        <div class="card mb-3 border-dark">
                             <div class="card-header">
                                 <a :href="attachment.link" target="_blank">
                                     {{ attachment.original_name }} ({{ attachment.size_text }})
@@ -341,15 +343,14 @@
                             {{ department.name }}
                         </label>
                     </div>
-                    <br>
                 </div>
             </div>
             <div>
                 <label class="font-weight-bold">Мероприятия:</label>
-                <div v-if="form_data.measures.length > 0" class="text-info mt-1">
+                <div v-if="form_data.measures.length > 0" class="alert alert-info">
                     <i class="fas fa-info-circle"></i> Существующие мероприятия будут удалены, а новые - добавлены, только после сохранения события.
                 </div>
-                <div class="row mt-2">
+                <div class="row mb-2">
                     <div class="col-12 text-center">
                         Добавить мероприятие
                         <br>
@@ -371,8 +372,8 @@
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addMeasureModalLabel">Добавить мероприятие</h5>
+                            <div class="modal-header p-0">
+                                <h5 class="modal-title pt-3 pl-3" id="addMeasureModalLabel">Добавить мероприятие</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -396,10 +397,10 @@
                         </div>
                     </div>
                 </div>
-                <div v-for="(measure, index) in added_measures" class="row mb-2">
+                <div v-for="(measure, index) in added_measures" class="row pb-3">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card border-dark">
+                            <div class="card-header border-dark">
                                 Новое мероприятие
                                 <button type="button"
                                         :disabled="loading"
@@ -417,9 +418,9 @@
                     </div>
                 </div>
                 <input type="hidden" name="measures_count" :value="added_measures.length" />
-                <div v-for="measure in form_data.measures" class="row mb-2">
+                <div v-for="measure in form_data.measures" class="row pb-2">
                     <div class="col-12">
-                        <div class="card">
+                        <div class="card border-primary">
                             <div class="card-header bg-primary text-light">
                                 Мероприятие №{{ measure.index }}
                                 <button v-if="measureRemoved(measure.id)"
@@ -442,7 +443,7 @@
                             <div class="card-body">
                                 {{ measure.text }}
                             </div>
-                            <div class="card-footer text-muted">
+                            <div class="card-footer border-primary text-muted">
                                 {{ measure.created_by }} ({{ measure.created_at }})
                             </div>
                         </div>
@@ -451,7 +452,7 @@
                 <input v-for="(id, index) in removed_measures" type="hidden" :name="getIdentifier('removed_measure_', index)" :value="id">
                 <input type="hidden" name="removed_measures_count" :value="removed_measures.length">
             </div>
-            <div class="form-group px-0 row">
+            <div class="form-group mt-2 row">
                 <div class="col">
                     <button type="submit" class="btn btn-success btn-block" :disabled="loading" @click.prevent="submitForm()">
                         Сохранить

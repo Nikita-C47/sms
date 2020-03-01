@@ -82,8 +82,7 @@ class EventModelObserver
     protected function getRemovalMailingList(Event $event, bool $includeDeletedBy = false)
     {
         // Выбираем всех администраторов
-        $users = User::with('responsible_departments')
-            ->where('access_level', 'admin');
+        $users = User::where('access_level', 'admin');
         // Если у события заполнены ответственные подразделения
         if(filled($event->responsible_departments)) {
             // Добавляем дополнительное сгруппированное условие

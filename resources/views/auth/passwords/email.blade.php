@@ -3,25 +3,24 @@
 @section('title', 'Восстановить пароль')
 
 @section('content')
-    <div class="alert alert-info m-2" role="alert">
-        <i class="fas fa-info-circle"></i> Чтобы восстановить пароль, укажите email в поле ниже. На него будет отправлена ссылка для сброса пароля.
-    </div>
     <!-- TODO: Русификация уведомлений о паролях -->
-    @if (session('status'))
-        <div class="alert alert-success m-2" role="alert">
-            {{ session('status') }}
-        </div>
-    @endif
     <form method="POST" action="{{ route('password.email') }}">
+        <h3 class="m-t-10 m-b-10">Сбросить пароль</h3>
+        <p class="m-b-20">
+            Чтобы восстановить пароль, укажите email в поле ниже. На него будет отправлена ссылка для сброса пароля.
+        </p>
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
         @csrf
         <div class="form-group">
-            <label for="email">
-                Email
-            </label>
             <input id="email"
                    type="email"
                    class="form-control input-solid @error('email') is-invalid @enderror"
                    name="email"
+                   placeholder="Email"
                    value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
             <span class="invalid-feedback" role="alert">
@@ -29,9 +28,8 @@
             </span>
             @enderror
         </div>
-
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">
+            <button class="btn btn-info btn-block" type="submit">
                 Отправить ссылку
             </button>
         </div>

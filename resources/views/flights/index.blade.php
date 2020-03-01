@@ -3,7 +3,7 @@
 @section('title', 'Список рейсов')
 
 @section('content')
-    <table class="table table-bordered-bd-primary table-hover">
+    <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Вылет</th>

@@ -9,7 +9,7 @@
             <label for="department_id">Подразделение: <span class="text-danger">*</span></label>
             <select id="department_id"
                     name="department_id"
-                    class="form-control input-solid @error('department_id') is-invalid @enderror">
+                    class="form-control @error('department_id') is-invalid @enderror">
                 <option value="">- Укажите подразделение -</option>
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>
@@ -28,7 +28,7 @@
             <input type="text"
                    name="code"
                    id="code"
-                   class="form-control input-solid @error('code') is-invalid @enderror"
+                   class="form-control @error('code') is-invalid @enderror"
                    aria-describedby="codeHelp"
                    value="{{ old('code') }}">
             @error('code')
@@ -45,7 +45,7 @@
             <input type="text"
                    name="name"
                    id="name"
-                   class="form-control input-solid @error('name') is-invalid @enderror"
+                   class="form-control @error('name') is-invalid @enderror"
                    value="{{ old('name') }}">
             @error('name')
             <span class="invalid-feedback" role="alert">

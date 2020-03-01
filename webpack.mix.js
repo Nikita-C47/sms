@@ -13,53 +13,41 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .scripts([
-        'resources/js/core/jquery.3.2.1.min.js',
-        'resources/js/core/popper.min.js',
-        'resources/js/core/bootstrap.min.js',
-        'resources/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js',
-        'resources/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js',
-        'resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js',
-        'resources/js/plugin/chart.js/chart.min.js',
-        'resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js',
-        'resources/js/plugin/chart-circle/circles.min.js',
-        'resources/js/plugin/datatables/datatables.min.js',
-        'resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js',
-        'resources/js/plugin/jqvmap/jquery.vmap.min.js',
-        'resources/js/plugin/jqvmap/maps/jquery.vmap.world.js',
-        'resources/js/plugin/sweetalert/sweetalert.min.js',
-        'resources/js/atlantis.min.js',
+        'resources/vendors/jquery/dist/jquery.min.js',
+        'resources/vendors/popper.js/dist/umd/popper.min.js',
+        'resources/vendors/bootstrap/dist/js/bootstrap.min.js',
+        'resources/vendors/metisMenu/dist/metisMenu.min.js',
+        'resources/vendors/jquery-slimscroll/jquery.slimscroll.min.js',
+        'resources/vendors/chart.js/dist/Chart.min.js',
+        'resources/vendors/jvectormap/jquery-jvectormap-2.0.3.min.js',
+        'resources/vendors/jvectormap/jquery-jvectormap-world-mill-en.js',
+        'resources/vendors/jvectormap/jquery-jvectormap-us-aea-en.js',
+        'resources/js/admincast.js',
+        'node_modules/bootstrap-notify/bootstrap-notify.js',
         'public/js/app.js'
     ], 'public/js/app.js')
+    .scripts([
+        'resources/vendors/jquery/dist/jquery.min.js',
+        'resources/vendors/popper.js/dist/umd/popper.min.js',
+        'resources/vendors/bootstrap/dist/js/bootstrap.min.js'
+    ], 'public/js/auth.js')
     .styles([
-        'resources/css/bootstrap.min.css',
-        'resources/css/atlantis.css',
+        'resources/vendors/bootstrap/dist/css/bootstrap.min.css',
+        'resources/vendors/themify-icons/css/themify-icons.css',
+        'resources/vendors/jvectormap/jquery-jvectormap-2.0.3.css',
+        'resources/css/main.css',
+        'resources/css/themes/white.css',
         'node_modules/air-datepicker/dist/css/datepicker.min.css',
         'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
     ], 'public/css/app.css')
-    .copyDirectory('resources/fonts', 'public/fonts')
-    .copyDirectory('resources/img', 'public/img')
-    .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
-
-/*
-mix.js('resources/js/app.js', 'public/js')
-    .scripts([
-        'resources/vendors/base/vendor.bundle.base.js',
-        'resources/vendors/chart.js/Chart.min.js',
-        'resources/js/vanilla/off-canvas.js',
-        'resources/js/vanilla/hoverable-collapse.js',
-        'resources/js/vanilla/template.js',
-        'resources/js/vanilla/todolist.js',
-        'resources/js/vanilla/dashboard.js'
-    ], 'public/js/royal.js')
     .styles([
-        'resources/vendors/ti-icons/css/themify-icons.css',
-        'vendors/base/vendor.bundle.base.css',
-        'resources/css/style.css',
-        'node_modules/air-datepicker/dist/css/datepicker.min.css'
-    ], 'public/css/royal.css')
-    .copy('node_modules/@fortawesome/fontawesome-free/css/all.min.css', 'public/css/fa.css')
-    .copyDirectory('resources/fonts', 'public/fonts')
-    .copyDirectory('resources/vendors/ti-icons/fonts', 'public/fonts')
+        'resources/vendors/bootstrap/dist/css/bootstrap.min.css',
+        'resources/vendors/themify-icons/css/themify-icons.css',
+        'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+        'resources/css/main.css',
+        'resources/css/pages/auth-light.css',
+    ], 'public/css/auth.css')
+    .copyDirectory('resources/vendors/themify-icons/fonts', 'public/fonts')
+    .copyDirectory('resources/img', 'public/img')
+    .copyDirectory('resources/webicons', 'public')
     .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
-
- */

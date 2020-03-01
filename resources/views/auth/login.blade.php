@@ -3,10 +3,8 @@
 @section('title', 'Войти')
 
 @section('content')
-    <div class="text-center">
-        <h4>Для продолжения необходимо авторизоваться</h4>
-    </div>
     <form method="post" action="{{ route('login') }}" class="pt-3">
+        <h2 class="login-title">Войти</h2>
         @csrf
         <div class="form-group">
             <input type="email"
@@ -33,29 +31,23 @@
                    autocomplete="current-password"
                    placeholder="Введите пароль">
         </div>
-        <div class="form-group row">
-            <div class="col text-left">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox"
-                           class="custom-control-input"
-                           id="remember"
-                           name="remember"
-                           value="1" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="remember">Запомнить меня</label>
-                </div>
-            </div>
-            <div class="col text-right">
-                @if (Route::has('password.request'))
-                    <a class="auth-link text-black" href="{{ route('password.request') }}">
-                        Забыли пароль?
-                    </a>
-                @endif
-            </div>
+        <div class="form-group d-flex justify-content-between">
+            <label class="ui-checkbox ui-checkbox-info">
+                <input type="checkbox"
+                       id="remember"
+                       name="remember"
+                       value="1" {{ old('remember') ? 'checked' : '' }}>
+                <span class="input-span"></span>
+                Запомнить меня
+            </label>
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}">
+                    Забыли пароль?
+                </a>
+            @endif
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                Войти
-            </button>
+            <button class="btn btn-info btn-block" type="submit">Войти</button>
         </div>
         <div class="form-group text-center">
             <a href="{{ route('create-anonymous-event') }}">
