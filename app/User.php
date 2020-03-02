@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Events\Event;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -19,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $email_verified_at Дата подтверждения email
  * @property string $password Пароль пользователя
  * @property string $access_level Уровень доступа
+ * @property bool $service Флаг того, что учетная запись является сервисной
  * @property string|null $role Роль пользователя
  * @property int|null $department_id ID подразделения, к которому относится пользователь
  * @property Carbon $created_at Дата создания записи
@@ -27,6 +29,9 @@ use Illuminate\Notifications\Notifiable;
  * @property Event[] $created_events Массив связных моделей созданных пользователем событий
  * @property Event[] $updated_events Массив связных моделей обновленных пользователем событий
  * @property Department $department Связная модель подразделения, в котором состоит пользователь
+ *
+ * @method static Builder real() Показывает только реальных пользователей
+ * @method static Builder service() Показывает только сервисных пользователей
  */
 class User extends Authenticatable
 {
@@ -44,7 +49,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'access_level', 'department_id'
+        'name', 'email', 'password', 'access_level', 'service', 'department_id', 'api_token'
     ];
 
     /**
@@ -53,7 +58,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token'
     ];
 
     /**
@@ -63,6 +68,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'service' => 'boolean'
     ];
 
     public function department()
@@ -102,5 +108,27 @@ class User extends Authenticatable
         }
 
         return $this->access_level === $role;
+    }
+
+    /**
+     * Scope a query to only include real users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeReal($query)
+    {
+        return $query->where('service', false);
+    }
+
+    /**
+     * Scope a query to only include service users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeService($query)
+    {
+        return $query->where('service', true);
     }
 }

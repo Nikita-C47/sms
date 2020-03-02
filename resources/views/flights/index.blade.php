@@ -6,6 +6,7 @@
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
+            <th>#</th>
             <th>Вылет</th>
             <th>Прилет</th>
             <th>Откуда</th>
@@ -20,6 +21,7 @@
         <tbody>
         @foreach($flights as $flight)
             <tr>
+                <td>{{ $flight->id }}</td>
                 <td>
                     {{ $flight->departure_datetime->format('d.m.Y H:i:s') }}
                 </td>

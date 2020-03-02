@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+    Route::get('/flights', 'Api\FlightsController@index');
+    Route::get('/flights/{id?}', 'Api\FlightsController@view');
+    Route::post('/flights', 'Api\FlightsController@create');
+    Route::post('/flights/load', 'Api\FlightsController@load')->name('load-flights');
+    Route::put('/flights/{id}', 'Api\FlightsController@edit');
+    Route::delete('/flights/{id}', 'Api\FlightsController@delete');
 });

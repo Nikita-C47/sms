@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Notifications\UserCredentials;
 use App\User;
 use App\Components\Helpers\PasswordHelper;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -20,7 +21,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('department')->orderBy('id', 'desc')->paginate(10);
+        $users = User::real()->with('department')->orderBy('id', 'desc')->paginate(10);
         return view('users.index', [
             'users' => $users
         ]);
@@ -76,7 +77,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::with('department')->findOrFail($id);
+        $user = User::real()->with('department')->findOrFail($id);
         $departments = Department::all();
 
         return view('users.edit', [
@@ -96,7 +97,7 @@ class UsersController extends Controller
     public function update(UserFormRequest $request, $id)
     {
         /** @var User $user */
-        $user = User::findOrFail($id);
+        $user = User::real()->findOrFail($id);
 
         $user->name = $request->get('name');
         $user->email = $request->get('email');
@@ -129,7 +130,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
         /** @var User $user */
-        $user = User::findOrFail($id);
+        $user = User::real()->findOrFail($id);
         $user->delete();
 
         return redirect()->route('users')->with('alert', [
@@ -140,7 +141,8 @@ class UsersController extends Controller
 
     public function auth($id)
     {
-        $user = User::findOrFail($id);
+        /** @var Authenticatable $user */
+        $user = User::real()->findOrFail($id);
 
         Auth::login($user);
 
