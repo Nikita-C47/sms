@@ -5,6 +5,7 @@ namespace App\Http\Requests\Events;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Validator;
 use function foo\func;
 
@@ -18,9 +19,7 @@ class EventFormRequest extends FormRequest
     public function authorize()
     {
         if($this->has('event_id')) {
-            /** @var \App\User $user */
-            $user = Auth::user();
-            return $user->hasRole('manager');
+            return Gate::allows('manager');
         }
 
         return Auth::check();

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DictionaryFormRequest extends FormRequest
 {
@@ -14,9 +15,7 @@ class DictionaryFormRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var \App\User $user */
-        $user = Auth::user();
-        return $user->hasRole('admin');
+        return Gate::allows('admin');
     }
 
     /**

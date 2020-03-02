@@ -46,5 +46,16 @@ class AuthServiceProvider extends ServiceProvider
             // Если событие не удалено - его может просматривать только менеджер событий или пользователь, создавший его
             return $user->hasRole('manager') || $user->id === $event->created_by;
         });
+        // Шлюз для проверки доступа к категориям событий
+        Gate::define('event-category', function ($user, $eventCategory) {
+            /** @var \App\User $user */
+            /** @var \App\Models\Events\EventCategory $eventCategory */
+            if($user->hasRole('admin')) {
+                // У администраторов права на все категории
+                return true;
+            }
+            // Если это не администратор - проверяем отдел
+            return $user->department_id === $eventCategory->department_id;
+        });
     }
 }

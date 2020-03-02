@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class EventCategoryFormRequest extends FormRequest
@@ -15,9 +17,7 @@ class EventCategoryFormRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var \App\User $user */
-        $user = Auth::user();
-        return $user->hasRole('admin');
+        return Gate::allows('manager');
     }
 
     /**
@@ -28,13 +28,17 @@ class EventCategoryFormRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'department_id' => 'required|exists:departments,id',
             'code' => 'required|unique:event_categories,code',
             'name' => 'required'
         ];
 
+        // Если это администратор - добавляем проверку отдела (менеджеру отдел проставится автоматически)
+        if(Gate::allows('admin')) {
+            $rules['department_id'] = 'required|exists:departments,id';
+        }
+
         if($this->has('category_id')) {
-            // Игнорируем его ID (чтобы не работало правило unique на текущего пользователя)
+            // Игнорируем его ID (чтобы не работало правило unique на текущую категорию)
             $rules['code'] = [
                 'required',
                 Rule::unique('event_categories')->ignore($this->get('category_id'))

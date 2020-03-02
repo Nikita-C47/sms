@@ -6,12 +6,24 @@ use App\Http\Requests\CategoryForDepartmentFormRequest;
 use App\Http\Requests\EventCategoryFormRequest;
 use App\Models\Department;
 use App\Models\Events\EventCategory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class EventCategoriesController extends Controller
 {
     public function index()
     {
-        $entities = EventCategory::with('department')->orderBy('id', 'desc')->paginate(10);
+        // Начинаем конструировать запрос
+        $entities = EventCategory::with('department');
+        // Если это не администратор, значит список категорий запросил менеджер
+        if(!Gate::allows('admin')) {
+            /** @var \App\User $user */
+            $user = Auth::user();
+            // Добавляем фильтр по отделу
+            $entities->where('department_id', $user->department_id);
+        }
+        // Добавляем сортировку и пагинатор
+        $entities = $entities->orderBy('id', 'desc')->paginate(10);
         return view('event-categories.index', [
             'entities' => $entities
         ]);
@@ -19,7 +31,8 @@ class EventCategoriesController extends Controller
 
     public function create()
     {
-        $departments = Department::all();
+        $departments = Gate::allows('admin') ? Department::all() : null;
+
         return view('event-categories.create', [
             'departments' => $departments
         ]);
@@ -27,8 +40,11 @@ class EventCategoriesController extends Controller
 
     public function store(EventCategoryFormRequest $request)
     {
+        /** @var \App\User $user */
+        $user = Auth::user();
+
         $entity = new EventCategory([
-            'department_id' => $request->get('department_id'),
+            'department_id' => Gate::allows('admin') ? $request->get('department_id') : $user->department_id,
             'code' => $request->get('code'),
             'name' => $request->get('name')
         ]);
@@ -43,7 +59,7 @@ class EventCategoriesController extends Controller
     public function edit($id)
     {
         $entity = EventCategory::findOrFail($id);
-        $departments = Department::all();
+        $departments = Gate::allows('admin') ? Department::all() : null;
 
         return view('event-categories.edit', [
             'entity' => $entity,
@@ -56,9 +72,16 @@ class EventCategoriesController extends Controller
         /** @var EventCategory $entity */
         $entity = EventCategory::findOrFail($id);
 
-        $entity->code = $request->get('code');
-        $entity->department_id = $request->get('department_id');
-        $entity->name = $request->get('name');
+        Gate::authorize('event-category', $entity);
+
+        /** @var \App\User $user */
+        $user = Auth::user();
+
+        $entity->fill([
+            'department_id' => Gate::allows('admin') ? $request->get('department_id') : $user->department_id,
+            'code' => $request->get('code'),
+            'name' => $request->get('name')
+        ]);
         $entity->save();
 
         return redirect()->route('event-categories')->with('alert', [
@@ -71,6 +94,9 @@ class EventCategoriesController extends Controller
     {
         /** @var EventCategory $entity */
         $entity = EventCategory::findOrFail($id);
+
+        Gate::authorize('event-category', $entity);
+
         $entity->delete();
 
         return redirect()->route('event-categories')->with('alert', [

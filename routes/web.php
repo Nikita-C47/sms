@@ -22,6 +22,15 @@ Auth::routes(['verify' => false, 'register' => false]);
 
 // Маршруты, доступные только менеджерам событий
 Route::middleware(['auth', 'role:manager'])->group(function () {
+    Route::get('/admin/event-categories', 'EventCategoriesController@index')->name('event-categories');
+    Route::post('/admin/event-categories/get-for-department', 'EventCategoriesController@getForDepartment')->name('categories-for-department');
+    Route::get('/admin/event-categories/create', 'EventCategoriesController@create')->name('create-event-category');
+    Route::post('/admin/event-categories/create', 'EventCategoriesController@store');
+    Route::get('/admin/event-categories/{id?}/edit', 'EventCategoriesController@edit')->name('edit-event-category');
+    Route::post('/admin/event-categories/{id?}/edit', 'EventCategoriesController@update');
+    Route::post('/admin/event-categories/{id?}/delete', 'EventCategoriesController@destroy')->name('delete-event-category');
+
+
     Route::get('/events/needs-approval', 'EventsController@indexNeedsApproval')->name('events-needs-approval');
     Route::get('/events/not-approved', 'EventsController@indexNotApproved')->name('events-not-approved');
     Route::post('/events/{id}/process', 'EventsController@processEvent')->name('event-process');
@@ -52,14 +61,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/event-relations/{id?}/delete', 'Dictionaries\EventRelationsController@destroy')->name('delete-event-relation');
 
     Route::get('/admin/flights', 'FlightsController@index')->name('flights');
-
-    Route::get('/admin/event-categories', 'EventCategoriesController@index')->name('event-categories');
-    Route::post('/admin/event-categories/get-for-department', 'EventCategoriesController@getForDepartment')->name('categories-for-department');
-    Route::get('/admin/event-categories/create', 'EventCategoriesController@create')->name('create-event-category');
-    Route::post('/admin/event-categories/create', 'EventCategoriesController@store');
-    Route::get('/admin/event-categories/{id?}/edit', 'EventCategoriesController@edit')->name('edit-event-category');
-    Route::post('/admin/event-categories/{id?}/edit', 'EventCategoriesController@update');
-    Route::post('/admin/event-categories/{id?}/delete', 'EventCategoriesController@destroy')->name('delete-event-category');
 
     Route::get('/admin/users', 'UsersController@index')->name('users');
     Route::get('/admin/users/create', 'UsersController@create')->name('create-user');

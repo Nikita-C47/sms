@@ -3,6 +3,12 @@
 @section('title', 'Список категорий событий')
 
 @section('content')
+    @if(count($entities) === 0)
+        <div class="alert alert-info" role="alert">
+            На данный момент в базе данных нет категорий событий.
+            Вы можете <a href="{{ route('create-event-category') }}" class="alert-link">добавить новую</a>.
+        </div>
+    @else
     <a href="{{ route('create-event-category') }}" class="btn btn-success">
         Добавить
     </a>
@@ -56,4 +62,5 @@
     </table>
     <hr>
     {{ $entities->links() }}
+    @endif
 @endsection

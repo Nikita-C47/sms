@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class UserFormRequest extends FormRequest
@@ -16,9 +17,7 @@ class UserFormRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var \App\User $user */
-        $user = Auth::user();
-        return $user->hasRole('admin');
+        return Gate::allows('admin');
     }
 
     /**

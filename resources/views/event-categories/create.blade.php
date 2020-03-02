@@ -5,24 +5,26 @@
 @section('content')
     <form method="post">
         @csrf
-        <div class="form-group px-0">
-            <label for="department_id">Подразделение: <span class="text-danger">*</span></label>
-            <select id="department_id"
-                    name="department_id"
-                    class="form-control @error('department_id') is-invalid @enderror">
-                <option value="">- Укажите подразделение -</option>
-                @foreach($departments as $department)
-                    <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>
-                        {{ $department->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('department_id')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-        </div>
+        @if(filled($departments))
+            <div class="form-group px-0">
+                <label for="department_id">Подразделение: <span class="text-danger">*</span></label>
+                <select id="department_id"
+                        name="department_id"
+                        class="form-control @error('department_id') is-invalid @enderror">
+                    <option value="">- Укажите подразделение -</option>
+                    @foreach($departments as $department)
+                        <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>
+                            {{ $department->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        @endif
         <div class="form-group px-0">
             <label for="code">Код: <span class="text-danger">*</span></label>
             <input type="text"

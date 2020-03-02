@@ -6,6 +6,7 @@
     <form method="post">
         @csrf
         <input type="hidden" name="category_id" value="{{ $entity->id }}">
+        @if(filled($departments))
         <div class="form-group px-0">
             <label for="department_id">Подразделение: <span class="text-danger">*</span></label>
             <select id="department_id"
@@ -24,6 +25,7 @@
             </span>
             @enderror
         </div>
+        @endif
         <div class="form-group px-0">
             <label for="code">Код: <span class="text-danger">*</span></label>
             <input type="text"
