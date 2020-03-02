@@ -3528,3 +3528,19 @@ table.dataTable {
     -webkit-justify-content: start !important;
     -ms-flex-pack: start !important;
     justify-content: start !important; } }
+
+.content {
+    max-width: 450px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 160px
+}
+
+.error-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 30px
+}

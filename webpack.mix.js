@@ -31,6 +31,10 @@ mix.js('resources/js/app.js', 'public/js')
         'resources/vendors/popper.js/dist/umd/popper.min.js',
         'resources/vendors/bootstrap/dist/js/bootstrap.min.js'
     ], 'public/js/auth.js')
+    .scripts([
+        'public/js/auth.js',
+        'resources/js/admincast.js',
+    ], 'public/js/error.js')
     .styles([
         'resources/vendors/bootstrap/dist/css/bootstrap.min.css',
         'resources/vendors/themify-icons/css/themify-icons.css',
@@ -45,8 +49,12 @@ mix.js('resources/js/app.js', 'public/js')
         'resources/vendors/themify-icons/css/themify-icons.css',
         'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
         'resources/css/main.css',
-        'resources/css/pages/auth-light.css',
+        'resources/css/pages/auth-light.css'
     ], 'public/css/auth.css')
+    .styles([
+        'resources/vendors/bootstrap/dist/css/bootstrap.min.css',
+        'resources/css/main.css'
+    ], 'public/css/error.css')
     .copyDirectory('resources/vendors/themify-icons/fonts', 'public/fonts')
     .copyDirectory('resources/img', 'public/img')
     .copyDirectory('resources/webicons', 'public')

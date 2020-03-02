@@ -41445,7 +41445,7 @@ var render = function() {
                             _vm._s(flight.number) +
                             ", " +
                             _vm._s(flight.board) +
-                            ", " +
+                            ",z " +
                             _vm._s(flight.departure_date) +
                             ")\n                    "
                         )
