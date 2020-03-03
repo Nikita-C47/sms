@@ -5421,6 +5421,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -41995,7 +41998,7 @@ var render = function() {
               _vm._l(_vm.form_data.attachments, function(attachment) {
                 return _c("div", { staticClass: "col-lg-6 col-sm-12" }, [
                   _c("div", { staticClass: "card mb-3 border-dark" }, [
-                    _c("div", { staticClass: "card-header" }, [
+                    _c("div", { staticClass: "card-header border-dark" }, [
                       _c(
                         "a",
                         { attrs: { href: attachment.link, target: "_blank" } },
@@ -42040,6 +42043,16 @@ var render = function() {
                             },
                             [_c("i", { staticClass: "fas fa-times fa-xs" })]
                           )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-footer text-muted" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(attachment.user_created_by.name) +
+                          " (" +
+                          _vm._s(attachment.created_at_display) +
+                          ")\n                        "
+                      )
                     ])
                   ])
                 ])

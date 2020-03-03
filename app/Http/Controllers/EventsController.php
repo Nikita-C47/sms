@@ -300,7 +300,7 @@ class EventsController extends Controller
             'user_updated_by',
             'measures.user_created_by',
             'responsible_departments',
-            'attachments'
+            'attachments.user_created_by'
         ])->findOrFail($id);
 
         $relations = EventRelation::all();

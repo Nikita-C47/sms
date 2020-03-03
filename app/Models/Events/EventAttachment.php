@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property string $path Путь к файлу в хранилище
  * @property int|null $created_by ID пользователя, добавившего файл
  * @property Carbon $created_at Дата создания записи
+ * @property Carbon $created_at_display Дата создания записи в локализованном формате
  * @property Carbon $updated_at Дата обновления записи
  *
  * @property Event $event Событие, к которому прикреплен файл
@@ -43,7 +44,8 @@ class EventAttachment extends Model
 
     protected $appends = [
         'size_text',
-        'link'
+        'link',
+        'created_at_display'
     ];
 
     public function saveInFilesystem(UploadedFile $file)
@@ -75,6 +77,11 @@ class EventAttachment extends Model
     public function getPathAttribute()
     {
         return 'events/'.$this->event_id.'/'.$this->name.'.'.$this->extension;
+    }
+
+    public function getCreatedAtDisplayAttribute()
+    {
+        return $this->created_at->format('d.m.Y H:i:s');
     }
 
     public function event()

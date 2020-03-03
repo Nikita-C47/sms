@@ -189,7 +189,7 @@
                     <td>
                         @if(count($event->measures) > 0)
                             @foreach($event->measures as $measure)
-                                <div class="card border-primary">
+                                <div class="card border-primary @if($loop->iteration > 1) mt-3 @endif">
                                     <div class="card-header bg-primary text-light">
                                         Мероприятие №{{ $loop->iteration }}
                                     </div>
@@ -199,7 +199,7 @@
                                         </p>
                                     </div>
                                     <div class="card-footer border-primary text-muted">
-                                        {{ $event->user_created_by->name }} ({{ $event->created_at->format('d.m.Y H:i:s') }})
+                                        {{ $measure->user_created_by->name }} ({{ $measure->created_at->format('d.m.Y H:i:s') }})
                                     </div>
                                 </div>
                             @endforeach
@@ -213,10 +213,17 @@
                     <td>
                         @if(count($event->attachments) > 0)
                             @foreach($event->attachments as $attachment)
-                                <div>
-                                    <a href="{{ $attachment->link }}" target="_blank">
-                                        {{ $attachment->original_name }} ({{ $attachment->size_text }})
-                                    </a>
+                                <div class="card border-dark @if($loop->iteration > 1) mt-3 @endif">
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <a href="{{ $attachment->link }}" target="_blank">
+                                                {{ $attachment->original_name }} ({{ $attachment->size_text }})
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer border-dark text-muted">
+                                        {{ $attachment->user_created_by->name }} ({{ $attachment->created_at->format('d.m.Y H:i:s') }})
+                                    </div>
                                 </div>
                             @endforeach
                         @else

@@ -202,7 +202,7 @@
                 <div class="row mt-2">
                     <div v-for="attachment in form_data.attachments" class="col-lg-6 col-sm-12">
                         <div class="card mb-3 border-dark">
-                            <div class="card-header">
+                            <div class="card-header border-dark">
                                 <a :href="attachment.link" target="_blank">
                                     {{ attachment.original_name }} ({{ attachment.size_text }})
                                 </a>
@@ -220,6 +220,9 @@
                                         @click="removeAttachment(attachment.id)">
                                     <i class="fas fa-times fa-xs"></i>
                                 </button>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{ attachment.user_created_by.name }} ({{ attachment.created_at_display }})
                             </div>
                         </div>
                     </div>
