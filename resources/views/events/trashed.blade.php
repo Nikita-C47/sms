@@ -34,7 +34,7 @@
                             @if(count($event->responsible_departments) > 0)
                                 <ul>
                                     @foreach($event->responsible_departments as $responsible_department)
-                                        <li>{{ $responsible_department->department->name }}</li>
+                                        <li>{{ $responsible_department->name }}</li>
                                     @endforeach
                                 </ul>
                             @else

@@ -2,35 +2,27 @@
 
 namespace App\Listeners;
 
-use App\Events\ResponsibleDepartmentAdded;
+use App\Components\Entities\ResponsibleDepartmentsListener;
+use App\Events\ResponsibleDepartmentsAdded;
 use App\Notifications\RDAdded;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
-class NotifyAddedRDs implements ShouldQueue
+class NotifyAddedRDs extends ResponsibleDepartmentsListener
 {
     /**
-     * Create the event listener.
+     * Sends notifications for users
      *
+     * @param \Illuminate\Support\Collection|array|mixed $users
+     * @param array $event
+     * @param array $user
      * @return void
      */
-    public function __construct()
+    public function sendNotifications($users, array $event, array $user)
     {
-        //
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @param  ResponsibleDepartmentAdded  $event
-     * @return void
-     */
-    public function handle(ResponsibleDepartmentAdded $event)
-    {
-        /** @var User[] $users */
-        $users = User::whereIn('department_id', $event->departments)->where('access_level', 'manager')->get();
-        Notification::send($users, new RDAdded($event->event));
+        Notification::send($users, new RDAdded($event, $user));
     }
 }

@@ -1,33 +1,44 @@
 <?php
 
-namespace App\Events;
+
+namespace App\Components\Concretes;
 
 use App\Models\Events\Event;
-use Illuminate\Broadcasting\Channel;
+use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ResponsibleDepartmentAdded
+class ResponsibleDepartmentsEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    /**
+     * @var array $departments
+     */
     public $departments;
+    /**
+     * @var Event $event
+     */
     public $event;
+    /**
+     * @var User
+     */
+    public $user;
 
     /**
      * Create a new event instance.
      *
      * @param array $departments
      * @param Event $event
+     * @param Authenticatable $user
      */
-    public function __construct(array $departments, Event $event)
+    public function __construct(array $departments, Event $event, Authenticatable $user)
     {
         $this->departments = $departments;
         $this->event = $event;
+        $this->user = $user;
     }
 
     /**

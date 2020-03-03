@@ -46,6 +46,7 @@ use PhpParser\Node\Stmt\Catch_;
  * @property Carbon $created_at Дата создания события
  * @property Carbon $updated_at Дата обновления события
  * @property Carbon $deleted_at Дата удаления события
+ * @property bool $notify Флаг того, что нужно отправлять уведомления (для запрета отправки в определенных сценариях)
  *
  * @property Flight|null $flight Связная модель рейса, с которым связано событие
  * @property Department|null $department Связная модель отдела, который инициировал событие
@@ -101,8 +102,11 @@ class Event extends Model
     ];
 
     protected $appends = [
-        'anonymous'
+        'anonymous',
+        'formatted_date'
     ];
+
+    public $notify = true;
 
     public function getStatusTextAttribute()
     {
@@ -163,6 +167,11 @@ class Event extends Model
         } else {
             return "Не обработано";
         }
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return $this->date->format('d.m.Y');
     }
 
     public function flight()

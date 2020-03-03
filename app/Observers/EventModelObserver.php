@@ -11,6 +11,7 @@ use App\Notifications\EventUpdated;
 use App\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class EventModelObserver
@@ -23,8 +24,8 @@ class EventModelObserver
      */
     public function created(Event $event)
     {
-        $users = User::where('access_level', 'manager')->get();
-        Notification::send($users, new EventCreated($event));
+        $users = $this->getEventMailingList($event);
+        Notification::send($users, new EventCreated($event->toArray(), Auth::user()));
     }
 
     /**
@@ -35,8 +36,10 @@ class EventModelObserver
      */
     public function updated(Event $event)
     {
-        $users = User::where('access_level', 'manager')->get();
-        Notification::send($users, new EventUpdated($event));
+        if($event->notify) {
+            $users = $this->getEventMailingList($event);
+            Notification::send($users, new EventUpdated($event->toArray(), Auth::user()));
+        }
     }
 
     /**
@@ -47,10 +50,12 @@ class EventModelObserver
      */
     public function deleted(Event $event)
     {
-        // Отправляем уведомление об удалении события заинтересованным пользователям
-        $users = $this->getRemovalMailingList($event);
-        // Отправляем пользователям уведомления
-        Notification::send($users, new EventDeleted($event));
+        if(!$event->isForceDeleting()) {
+            // Отправляем уведомление об удалении события заинтересованным пользователям
+            $users = $this->getRemovalMailingList($event);
+            // Отправляем пользователям уведомления
+            Notification::send($users, new EventDeleted($event->toArray(), Auth::user()));
+        }
     }
 
     /**
@@ -63,7 +68,7 @@ class EventModelObserver
     {
         $users = $this->getRemovalMailingList($event, true);
         // Отправляем пользователям уведомления
-        Notification::send($users, new EventRestored($event));
+        Notification::send($users, new EventRestored($event->toArray(), Auth::user()));
     }
 
     /**
@@ -76,13 +81,25 @@ class EventModelObserver
     {
         $users = $this->getRemovalMailingList($event, true);
         // Отправляем пользователям уведомления
-        Notification::send($users, new EventDestroyed($event));
+        Notification::send($users, new EventDestroyed($event->toArray(), Auth::user()));
+    }
+
+    protected function getEventMailingList(Event $event)
+    {
+        $users = User::real()
+            ->where('access_level', 'manager');
+
+        if(!$event->anonymous) {
+            $users = $users->orWhere('id', $event->created_by);
+        }
+
+        return $users->get();
     }
 
     protected function getRemovalMailingList(Event $event, bool $includeDeletedBy = false)
     {
         // Выбираем всех администраторов
-        $users = User::where('access_level', 'admin');
+        $users = User::real()->where('access_level', 'admin');
         // Если у события заполнены ответственные подразделения
         if(filled($event->responsible_departments)) {
             // Добавляем дополнительное сгруппированное условие
@@ -97,10 +114,17 @@ class EventModelObserver
         // Исключаем текущего пользователя из рассылки (он и так в курсе что он сделал, ведь правда?)
         $users = $users->where('id', '<>', Auth::user()->getAuthIdentifier());
 
+
         // Добавляем в рассылку пользователя, удалившего событие (если нужно)
         if($includeDeletedBy) {
             $users = $users->orWhere('id', $event->deleted_by);
         }
+        // Если событие не анонимное
+        if(!$event->anonymous) {
+            // Включаем в выборку того, кто создал событие
+            $users = $users->orWhere('id', $event->created_by);
+        }
+
         // Возвращаем выборку
         return $users->get();
     }

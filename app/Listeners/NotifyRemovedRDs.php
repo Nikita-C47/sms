@@ -2,35 +2,27 @@
 
 namespace App\Listeners;
 
-use App\Events\ResponsibleDepartmentRemoved;
+use App\Components\Entities\ResponsibleDepartmentsListener;
+use App\Events\ResponsibleDepartmentsRemoved;
 use App\Notifications\RDRemoved;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
-class NotifyRemovedRDs implements ShouldQueue
+class NotifyRemovedRDs extends ResponsibleDepartmentsListener
 {
     /**
-     * Create the event listener.
+     * Sends notifications for users
      *
+     * @param \Illuminate\Support\Collection|array|mixed $users
+     * @param array $event
+     * @param array $user
      * @return void
      */
-    public function __construct()
+    public function sendNotifications($users, array $event, array $user)
     {
-        //
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @param  ResponsibleDepartmentRemoved  $event
-     * @return void
-     */
-    public function handle(ResponsibleDepartmentRemoved $event)
-    {
-        /** @var User[] $users */
-        $users = User::whereIn('department_id', $event->departments)->where('access_level', 'manager')->get();
-        Notification::send($users, new RDRemoved($event->event));
+        Notification::send($users, new RDRemoved($event, $user));
     }
 }

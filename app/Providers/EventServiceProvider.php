@@ -18,10 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\ResponsibleDepartmentAdded' => [
+        'App\Events\ResponsibleDepartmentsAdded' => [
             'App\Listeners\NotifyAddedRDs'
         ],
-        'App\Events\ResponsibleDepartmentRemoved' => [
+        'App\Events\ResponsibleDepartmentsRemoved' => [
             'App\Listeners\NotifyRemovedRDs'
         ],
     ];

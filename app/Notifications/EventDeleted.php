@@ -2,68 +2,54 @@
 
 namespace App\Notifications;
 
-use App\Models\Events\Event;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class EventDeleted extends Notification implements ShouldQueue
+class EventDeleted extends EventNotification
 {
-    use Queueable;
+    /** @var \App\User $notifiable */
+    protected $notifiable;
 
-    protected $event;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @param Event $event
-     */
-    public function __construct(Event $event)
-    {
-        $this->event = $event;
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
     public function toMail($notifiable)
     {
-        /** @var \App\User $user */
-        $user = Auth::user();
+        $this->notifiable = $notifiable;
+        return parent::toMail($notifiable);
+    }
 
+    public function emailToCreator()
+    {
+        return (new MailMessage())
+            ->subject('Ваше событие было удалено')
+            ->greeting('Здравствуйте! Событие, которое вы создавали в системе SMS было удалено.')
+            ->line('Детали события:')
+            ->line('Номер: '.$this->event['id'])
+            ->line('Дата: '.$this->event['formatted_date'])
+            ->line('Текст сообщения: '. $this->event['message'])
+            ->line('Кем удалено: '.$this->user->name)
+            ->line('Обращаем Ваше внимание, что данное событие не удалено окончательно, а значит работа по нему ещё может возобновиться.')
+            ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
+    }
+
+    public function eventEmail()
+    {
         $message = (new MailMessage())
             ->subject('Удалено событие в базе данных SMS')
             ->greeting('Здравствуйте! В системе SMS было удалено событие.')
             ->line('Детали события:')
-            ->line('Номер: '.$this->event->id)
-            ->line('Дата: '.$this->event->date->format('d.m.Y'))
-            ->line('Текст сообщения: '.$this->event->message)
-            ->line('Кем удалено: '.$this->event->user_deleted_by->name);
+            ->line('Номер: '.$this->event['id'])
+            ->line('Дата: '.$this->event['formatted_date'])
+            ->line('Текст сообщения: '. $this->event['message'])
+            ->line('Кем удалено: '.$this->user->name);
 
-        if($user->access_level === 'admin') {
+        if($this->notifiable->access_level === 'admin') {
             $message
                 ->line('Обращаем Ваше внимание, что данное событие не удалено окончательно и все еще существует в базе данных. Если Вы хотите его восстановить, перейдите по ссылке ниже:')
-                ->action('Просмотр события', route('view-event', ['id' => $this->event->id]))
+                ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
                 ->line('Вы получили это письмо, так как находитесь в группе администраторов, которые получают уведомления об удалении событий.');
         }
 
-        if($user->access_level === 'manager') {
+        if($this->notifiable->access_level === 'manager') {
             $message
                 ->line('Обращаем Ваше внимание, что данное событие не удалено окончательно и все еще существует в базе данных, а значит работа по нему ещё может возобновиться')
                 ->line('Вы получили это письмо, так как ваше подразделение находится в списке ответственных по данному событию.');
@@ -74,18 +60,5 @@ class EventDeleted extends Notification implements ShouldQueue
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
 
         return $message;
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
     }
 }

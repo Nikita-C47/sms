@@ -277,8 +277,8 @@
                             <div class="modal fade" id="eventRestoreModal" tabindex="-1" role="dialog" aria-labelledby="eventRestoreModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="eventRestoreModalLabel">Восстановить событие</h5>
+                                        <div class="modal-header p-0">
+                                            <h5 class="modal-title pt-3 pl-3" id="eventRestoreModalLabel">Восстановить событие</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -311,8 +311,8 @@
                             <div class="modal fade" id="eventDestroyModal" tabindex="-1" role="dialog" aria-labelledby="eventDestroyModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="eventDestroyModalLabel">Удалить событие безвозвратно</h5>
+                                        <div class="modal-header p-0">
+                                            <h5 class="modal-title pt-3 pl-3" id="eventDestroyModalLabel">Удалить событие безвозвратно</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -347,8 +347,8 @@
                             <div class="modal fade" id="eventDeleteModal" tabindex="-1" role="dialog" aria-labelledby="eventDeleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="eventDeleteModalLabel">Подтверждение удаления</h5>
+                                        <div class="modal-header p-0">
+                                            <h5 class="modal-title pt-3 pl-3" id="eventDeleteModalLabel">Подтверждение удаления</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ResponsibleDepartmentAdded;
-use App\Events\ResponsibleDepartmentRemoved;
+use App\Events\ResponsibleDepartmentsAdded;
+use App\Events\ResponsibleDepartmentsRemoved;
 use App\Http\Requests\Events\AnonymousEventFormRequest;
 use App\Http\Requests\Events\EventCategoriesFormRequest;
 use App\Http\Requests\Events\FindEventFormRequest;
@@ -163,7 +163,8 @@ class EventsController extends Controller
      */
     public function store(EventFormRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        /** @var Event $event */
+        $event = DB::transaction(function () use ($request) {
             $date = Carbon::createFromFormat('d.m.Y', $request->get('date'));
 
             $event = new Event([
@@ -204,7 +205,7 @@ class EventsController extends Controller
 
         $request->session()->flash('alert', [
             'type' => 'success',
-            'text' => 'Новое событие успешно добавлено'
+            'text' => 'Новое событие #'.$event->id.' успешно добавлено'
         ]);
 
         return response('OK', 200);
@@ -459,9 +460,9 @@ class EventsController extends Controller
         // 4. Генерируем события
 
         // Событие, инициирующее отправку уведомлений пользователям новых ответственных подразделений
-        event(new ResponsibleDepartmentAdded($newRDs->diff($existingRDs)->toArray(), $event));
+        event(new ResponsibleDepartmentsAdded($newRDs->diff($existingRDs)->toArray(), $event, Auth::user()));
         // Событие, инициирующее отправку уведомлений пользователям удаленных ответственных подразделений
-        event(new ResponsibleDepartmentRemoved($existingRDs->diff($newRDs)->toArray(), $event));
+        event(new ResponsibleDepartmentsRemoved($existingRDs->diff($newRDs)->toArray(), $event, Auth::user()));
 
         // Добавляем флэш-уведомление в сессию
         $request->session()->flash('alert', [
@@ -489,6 +490,7 @@ class EventsController extends Controller
             $event = Event::sharedLock()->findOrFail($id);
             $event->updated_by = Auth::user()->getAuthIdentifier();
             $event->deleted_by = Auth::user()->getAuthIdentifier();
+            $event->notify = false;
             $event->save();
             $event->delete();
 
@@ -508,6 +510,7 @@ class EventsController extends Controller
             /** @var Event $event */
             $event = Event::onlyTrashed()->sharedLock()->findOrFail($id);
             $event->updated_by = Auth::user()->getAuthIdentifier();
+            $event->notify = false;
             //$event->deleted_by = null;
             $event->save();
             $event->restore();
@@ -527,6 +530,7 @@ class EventsController extends Controller
         $event = DB::transaction(function () use ($id) {
             /** @var Event $event */
             $event = Event::onlyTrashed()->sharedLock()->findOrFail($id);
+            $event->notify = false;
             $event->forceDelete();
             return $event;
         });

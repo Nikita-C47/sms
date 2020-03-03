@@ -42,27 +42,32 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $events = Event::with('flight')
-            ->join(
-                'event_responsible_departments',
-                'events.id',
-                '=',
-                'event_responsible_departments.event_id'
-            )
-            ->join(
-                'flights',
-                'events.flight_id',
-                '=',
-                'flights.id'
-            )
-            ->where('flights.captain', 'Иванов Иван Иванович')
-            ->where('event_responsible_departments.department_id', 2)
-            ->select('events.id')
-            ->get();
         /** @var Event $event */
-        foreach ($events as $event) {
-            $this->info($event->id);
-        }
+        $event = Event::find(1);
+        $array = $event->toArray();
+        dump($array);
+
+//        $events = Event::with('flight')
+//            ->join(
+//                'event_responsible_departments',
+//                'events.id',
+//                '=',
+//                'event_responsible_departments.event_id'
+//            )
+//            ->join(
+//                'flights',
+//                'events.flight_id',
+//                '=',
+//                'flights.id'
+//            )
+//            ->where('flights.captain', 'Иванов Иван Иванович')
+//            ->where('event_responsible_departments.department_id', 2)
+//            ->select('events.id')
+//            ->get();
+//        /** @var Event $event */
+//        foreach ($events as $event) {
+//            $this->info($event->id);
+//        }
 
 //        $events = Event::with('responsible_departments')
 //            ->join(
