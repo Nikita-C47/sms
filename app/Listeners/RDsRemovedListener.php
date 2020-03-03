@@ -2,16 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Components\Entities\ResponsibleDepartmentsListener;
-use App\Events\ResponsibleDepartmentsRemoved;
-use App\Notifications\RDRemoved;
+use App\Components\Entities\RDsListener;
+use App\Events\RDsRemoved;
+use App\Notifications\RDsRemovedNotification;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
-class NotifyRemovedRDs extends ResponsibleDepartmentsListener
+class RDsRemovedListener extends RDsListener
 {
     /**
      * Sends notifications for users
@@ -23,6 +23,6 @@ class NotifyRemovedRDs extends ResponsibleDepartmentsListener
      */
     public function sendNotifications($users, array $event, array $user)
     {
-        Notification::send($users, new RDRemoved($event, $user));
+        Notification::send($users, new RDsRemovedNotification($event, $user));
     }
 }

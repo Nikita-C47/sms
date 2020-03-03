@@ -6,7 +6,7 @@ use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
 
-class EventRestored extends EventNotification
+class EventRestoredNotification extends EventNotification
 {
     public function eventEmail()
     {
@@ -17,7 +17,7 @@ class EventRestored extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем восстановлено: '.$this->user->name)
+            ->line('Кем восстановлено: '.$this->user['name'])
             ->line('Работа по данному событию была возобновлена, а значит оно снова доступно для просмотра и редактирования, а также его можно найти в списке событий под его номером.')
             ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
             ->line('Вы получили это письмо, так как находитесь в группе администраторов, или Ваше подразделение в списке ответственных по данному событию. Либо же это Вы подали заявку на удаление этого события.')
@@ -34,7 +34,7 @@ class EventRestored extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем восстановлено: '.$this->user->name)
+            ->line('Кем восстановлено: '.$this->user['name'])
             ->line('Работа по данному событию была возобновлена, а значит оно снова доступно для просмотра, а также его можно найти в списке событий под его номером.')
             ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');

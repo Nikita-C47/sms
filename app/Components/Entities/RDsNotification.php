@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-abstract class ResponsibleDepartmentsNotification extends Notification implements ShouldQueue
+abstract class RDsNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

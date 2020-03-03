@@ -6,7 +6,7 @@ use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
 
-class EventDeleted extends EventNotification
+class EventDeletedNotification extends EventNotification
 {
     /** @var \App\User $notifiable */
     protected $notifiable;
@@ -26,7 +26,7 @@ class EventDeleted extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем удалено: '.$this->user->name)
+            ->line('Кем удалено: '.$this->user['name'])
             ->line('Обращаем Ваше внимание, что данное событие не удалено окончательно, а значит работа по нему ещё может возобновиться.')
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }
@@ -40,7 +40,7 @@ class EventDeleted extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем удалено: '.$this->user->name);
+            ->line('Кем удалено: '.$this->user['name']);
 
         if($this->notifiable->access_level === 'admin') {
             $message

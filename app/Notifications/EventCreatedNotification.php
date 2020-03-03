@@ -5,7 +5,7 @@ namespace App\Notifications;
 use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class EventCreated extends EventNotification
+class EventCreatedNotification extends EventNotification
 {
     /**
      * Get the mail representation of the notification.
@@ -48,7 +48,7 @@ class EventCreated extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем создано: '. $this->user->name)
+            ->line('Кем создано: '. $this->user['name'])
             ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
             ->line('Вы получили это письмо, так как находитесь в группе менеджеров событий, которые получают уведомления о всех действиях с событиями.')
             ->line('Если данное письмо попало к Вам по ошибке, пожалуйста свяжитесь со специалистами, осуществляющими техническое обслуживание базы данных SMS.')

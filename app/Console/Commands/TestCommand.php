@@ -42,11 +42,6 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        /** @var Event $event */
-        $event = Event::find(1);
-        $array = $event->toArray();
-        dump($array);
-
 //        $events = Event::with('flight')
 //            ->join(
 //                'event_responsible_departments',

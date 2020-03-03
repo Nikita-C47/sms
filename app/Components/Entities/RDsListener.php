@@ -3,11 +3,11 @@
 
 namespace App\Components\Entities;
 
-use App\Components\Concretes\ResponsibleDepartmentsEvent;
+use App\Components\Concretes\RDsEvent;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-abstract class ResponsibleDepartmentsListener implements ShouldQueue
+abstract class RDsListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -22,7 +22,7 @@ abstract class ResponsibleDepartmentsListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param ResponsibleDepartmentsEvent $event
+     * @param RDsEvent $event
      * @return void
      */
     public function handle($event)

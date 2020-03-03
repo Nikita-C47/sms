@@ -3,11 +3,11 @@
 namespace App\Observers;
 
 use App\Models\Events\Event;
-use App\Notifications\EventDeleted;
-use App\Notifications\EventDestroyed;
-use App\Notifications\EventRestored;
-use App\Notifications\EventCreated;
-use App\Notifications\EventUpdated;
+use App\Notifications\EventDeletedNotification;
+use App\Notifications\EventDestroyedNotification;
+use App\Notifications\EventRestoredNotification;
+use App\Notifications\EventCreatedNotification;
+use App\Notifications\EventUpdatedNotification;
 use App\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,19 @@ class EventModelObserver
     public function created(Event $event)
     {
         $users = $this->getEventMailingList($event);
-        Notification::send($users, new EventCreated($event->toArray(), Auth::user()));
+        $message = "Event #".$event->id." was created ";
+
+        if($event->anonymous) {
+            $message .= "anonymously";
+            Notification::send($users, new EventCreatedNotification($event->toArray()));
+        } else {
+            /** @var \App\User $user */
+            $user = Auth::user();
+            $message .= "by user ".$user->name;
+            Notification::send($users, new EventCreatedNotification($event->toArray(), $user->toArray()));
+        }
+
+        Log::channel('user_actions')->info($message);
     }
 
     /**
@@ -38,7 +50,11 @@ class EventModelObserver
     {
         if($event->notify) {
             $users = $this->getEventMailingList($event);
-            Notification::send($users, new EventUpdated($event->toArray(), Auth::user()));
+            /** @var \App\User $user */
+            $user = Auth::user();
+            Notification::send($users, new EventUpdatedNotification($event->toArray(), $user->toArray()));
+            Log::channel('user_actions')
+                ->info("Event #".$event->id." was updated by user ".$user->name);
         }
     }
 
@@ -53,8 +69,12 @@ class EventModelObserver
         if(!$event->isForceDeleting()) {
             // Отправляем уведомление об удалении события заинтересованным пользователям
             $users = $this->getRemovalMailingList($event);
+            /** @var \App\User $user */
+            $user = Auth::user();
             // Отправляем пользователям уведомления
-            Notification::send($users, new EventDeleted($event->toArray(), Auth::user()));
+            Notification::send($users, new EventDeletedNotification($event->toArray(), $user->toArray()));
+            Log::channel('user_actions')
+                ->info("Event #".$event->id." was deleted by user ".$user->name);
         }
     }
 
@@ -67,8 +87,13 @@ class EventModelObserver
     public function restored(Event $event)
     {
         $users = $this->getRemovalMailingList($event, true);
+        /** @var \App\User $user */
+        $user = Auth::user();
         // Отправляем пользователям уведомления
-        Notification::send($users, new EventRestored($event->toArray(), Auth::user()));
+        Notification::send($users, new EventRestoredNotification($event->toArray(), $user->toArray()));
+
+        Log::channel('user_actions')
+            ->info("Event #".$event->id." was restored by user ".$user->name);
     }
 
     /**
@@ -80,8 +105,12 @@ class EventModelObserver
     public function forceDeleted(Event $event)
     {
         $users = $this->getRemovalMailingList($event, true);
+        /** @var \App\User $user */
+        $user = Auth::user();
         // Отправляем пользователям уведомления
-        Notification::send($users, new EventDestroyed($event->toArray(), Auth::user()));
+        Notification::send($users, new EventDestroyedNotification($event->toArray(), $user->toArray()));
+        Log::channel('user_actions')
+            ->info("Event #".$event->id." was destroyed by user ".$user->name);
     }
 
     protected function getEventMailingList(Event $event)

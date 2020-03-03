@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
-use App\Components\Entities\ResponsibleDepartmentsNotification;
+use App\Components\Entities\RDsNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RDAdded extends ResponsibleDepartmentsNotification
+class RDsAddedNotification extends RDsNotification
 {
     /**
      * Get the mail representation of the notification.

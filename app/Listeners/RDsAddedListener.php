@@ -2,16 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Components\Entities\ResponsibleDepartmentsListener;
-use App\Events\ResponsibleDepartmentsAdded;
-use App\Notifications\RDAdded;
+use App\Components\Entities\RDsListener;
+use App\Events\RDsAdded;
+use App\Notifications\RDsAddedNotification;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
-class NotifyAddedRDs extends ResponsibleDepartmentsListener
+class RDsAddedListener extends RDsListener
 {
     /**
      * Sends notifications for users
@@ -23,6 +23,6 @@ class NotifyAddedRDs extends ResponsibleDepartmentsListener
      */
     public function sendNotifications($users, array $event, array $user)
     {
-        Notification::send($users, new RDAdded($event, $user));
+        Notification::send($users, new RDsAddedNotification($event, $user));
     }
 }

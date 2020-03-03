@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Models\Department;
-use App\Notifications\UserCredentials;
+use App\Notifications\UserCredentialsNotification;
 use App\User;
 use App\Components\Helpers\PasswordHelper;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -61,7 +62,12 @@ class UsersController extends Controller
         ]);
 
         $user->save();
-        $user->notify(new UserCredentials($password));
+        $user->notify(new UserCredentialsNotification($password));
+
+        /** @var \App\User $authUser */
+        $authUser = Auth::user();
+        Log::channel('user_actions')
+            ->info("User ".$user->name." was created by user ".$authUser->name);
 
         return redirect()->route('users')->with('alert', [
             'type' => 'success',
@@ -107,13 +113,21 @@ class UsersController extends Controller
 
         $text = "Пользователь успешно обновлен";
 
+        /** @var \App\User $authUser */
+        $authUser = Auth::user();
+
         if($request->has('reset_password')) {
             $password = $this->generatePassword();
             $user->password = Hash::make($password);
             $user->save();
-            $user->notify(new UserCredentials($password, true));
+            $user->notify(new UserCredentialsNotification($password, true));
             $text .= ". Новый пароль выслан на указанный email";
+
+            Log::channel('user_actions')
+                ->info("User ".$authUser->name." resets user ".$user->name." password");
         }
+
+        Log::channel('user_actions')->info("User ".$user->name." was updated by user ".$authUser->name);
 
         return redirect()->route('users')->with('alert', [
             'type' => 'success',
@@ -133,6 +147,12 @@ class UsersController extends Controller
         $user = User::real()->findOrFail($id);
         $user->delete();
 
+        /** @var \App\User $authUser */
+        $authUser = Auth::user();
+        Log::channel('user_actions')
+            ->info("User ".$user->name." was removed by user ".$authUser->name);
+
+
         return redirect()->route('users')->with('alert', [
             'type' => 'success',
             'text' => 'Пользователь "'.$user->name.'" успешно удалён!'
@@ -141,10 +161,15 @@ class UsersController extends Controller
 
     public function auth($id)
     {
-        /** @var Authenticatable $user */
+        /** @var Authenticatable|User $user */
         $user = User::real()->findOrFail($id);
 
         Auth::login($user);
+
+        /** @var \App\User $authUser */
+        $authUser = Auth::user();
+        Log::channel('user_actions')
+            ->info("User ".$authUser->name." was authorized as user ".$user->name);
 
         return redirect()->route('home');
     }

@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ResponsibleDepartmentsEvent
+class RDsEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     /**

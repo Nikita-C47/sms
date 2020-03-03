@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EventUpdated extends EventNotification
+class EventUpdatedNotification extends EventNotification
 {
     public function eventEmail()
     {
@@ -20,7 +20,7 @@ class EventUpdated extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем изменено: '. $this->user->name)
+            ->line('Кем изменено: '. $this->user['name'])
             ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
             ->line('Вы получили это письмо, так как находитесь в группе менеджеров событий, которые получают уведомления о всех действиях с событиями.')
             ->line('Если данное письмо попало к Вам по ошибке, пожалуйста свяжитесь со специалистами, осуществляющими техническое обслуживание базы данных SMS.')
@@ -36,7 +36,7 @@ class EventUpdated extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '. $this->event['message'])
-            ->line('Кем изменено: '. $this->user->name)
+            ->line('Кем изменено: '. $this->user['name'])
             ->action('Просмотр события', route('view-event', ['id' => $this->event['id']]))
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ResponsibleDepartmentsAdded;
-use App\Events\ResponsibleDepartmentsRemoved;
+use App\Events\EventProcessed;
+use App\Events\RDsAdded;
+use App\Events\RDsRemoved;
 use App\Http\Requests\Events\AnonymousEventFormRequest;
 use App\Http\Requests\Events\EventCategoriesFormRequest;
 use App\Http\Requests\Events\FindEventFormRequest;
@@ -19,7 +20,7 @@ use App\Models\Events\EventRelation;
 use App\Models\Events\EventResponsibleDepartment;
 use App\Models\Events\EventType;
 use App\Models\Flight;
-use App\Notifications\EventProcessed;
+use App\Notifications\EventProcessedNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
@@ -238,13 +239,13 @@ class EventsController extends Controller
             $event = Event::sharedLock()->findOrFail($id);
             $event->approved = $request->get('approved');
             $event->updated_by = Auth::user()->getAuthIdentifier();
+            $event->notify = false;
             $event->save();
 
             return $event;
         });
 
-        $users = User::whereIn('access_level', ['admin', 'manager'])->where('id', '<>', Auth::user()->getAuthIdentifier())->get();
-        Notification::send($users, new EventProcessed($event));
+        event(new EventProcessed($event, Auth::user()));
 
         $action = $event->approved ? 'одобрено' : 'отклонено';
 
@@ -426,20 +427,23 @@ class EventsController extends Controller
 
             // Получаем ключи мероприятий, которые нужно удалить
             $removalArray = $this->getMultipleKeys($request, 'removed_measure_', 'removed_measures_count');
-            // Удаляем существующие мероприятия по ключам
-            EventMeasure::destroy($removalArray);
-
+            // Получаем указанные мероприятия
+            $itemsToRemove = EventMeasure::sharedLock()->find($removalArray);
+            // Перебираем их
+            /** @var EventMeasure $measure */
+            foreach ($itemsToRemove as $measure) {
+                // Удаляем мероприятие
+                $measure->delete();
+            }
             // Получаем ключи вложений, которые нужно удалить
             $removalArray = $this->getMultipleKeys($request, 'removed_attachment_', 'removed_attachments_count');
             // Получаем указанные вложения
-            $attachmentsToRemove = EventAttachment::sharedLock()->find($removalArray);
+            $itemsToRemove = EventAttachment::sharedLock()->find($removalArray);
             // Перебираем их
             /** @var EventAttachment $attachment */
-            foreach ($attachmentsToRemove as $attachment) {
+            foreach ($itemsToRemove as $attachment) {
                 // Удаляем вложение
                 $attachment->delete();
-                // Удаляем его из файловой системы
-                $attachment->removeFromFileSystem();
             }
 
             // Возвращаем обновленное событие
@@ -460,9 +464,9 @@ class EventsController extends Controller
         // 4. Генерируем события
 
         // Событие, инициирующее отправку уведомлений пользователям новых ответственных подразделений
-        event(new ResponsibleDepartmentsAdded($newRDs->diff($existingRDs)->toArray(), $event, Auth::user()));
+        event(new RDsAdded($newRDs->diff($existingRDs)->toArray(), $event, Auth::user()));
         // Событие, инициирующее отправку уведомлений пользователям удаленных ответственных подразделений
-        event(new ResponsibleDepartmentsRemoved($existingRDs->diff($newRDs)->toArray(), $event, Auth::user()));
+        event(new RDsRemoved($existingRDs->diff($newRDs)->toArray(), $event, Auth::user()));
 
         // Добавляем флэш-уведомление в сессию
         $request->session()->flash('alert', [

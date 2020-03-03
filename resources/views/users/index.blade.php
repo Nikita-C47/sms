@@ -37,18 +37,26 @@
                 <td>{{ $user->created_at->format('d.m.Y H:i:s') }}</td>
                 <td>{{ $user->updated_at->format('d.m.Y H:i:s') }}</td>
                 <td>
-                    <form method="post" action="{{ route('auth', ['id' => $user->id]) }}">
-                        @csrf
-                        <button class="btn btn-info btn-sm" type="submit" title="Авторизоваться">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </button>
-                        <a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-sm btn-primary" title="Редактировать">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <confirmation-modal v-bind:id="{{ $user->id }}"
-                                            v-bind:entity_name="'{{ $user->name }}'"
-                                            v-bind:action="'{{ route('delete-user', ['id' => $user->id]) }}'"></confirmation-modal>
-                    </form>
+                    <div class="row">
+                        <div class="col pr-0">
+                            <form method="post" action="{{ route('auth', ['id' => $user->id]) }}">
+                                @csrf
+                                <button class="btn btn-info btn-sm" type="submit" title="Авторизоваться">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col px-0">
+                            <a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-sm btn-primary" title="Редактировать">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                        <div class="col pl-0">
+                            <confirmation-modal v-bind:id="{{ $user->id }}"
+                                                v-bind:entity_name="'{{ $user->name }}'"
+                                                v-bind:action="'{{ route('delete-user', ['id' => $user->id]) }}'"></confirmation-modal>
+                        </div>
+                    </div>
                 </td>
             </tr>
         @endforeach

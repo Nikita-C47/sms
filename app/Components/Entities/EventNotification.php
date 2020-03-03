@@ -15,16 +15,16 @@ abstract class EventNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $event;
-    /** @var User $user */
+    /** @var array|null $user */
     protected $user;
 
     /**
      * Create a new notification instance.
      *
      * @param array $event
-     * @param Authenticatable $user
+     * @param array|null $user
      */
-    public function __construct(array $event, Authenticatable $user)
+    public function __construct(array $event, array $user = null)
     {
         $this->event = $event;
         $this->user = $user;

@@ -7,6 +7,7 @@ use App\Http\Requests\Api\FlightRequest;
 use App\Http\Requests\Api\FlightUpdateRequest;
 use App\Http\Resources\FlightResource;
 use App\Models\Flight;
+use Illuminate\Support\Facades\Log;
 
 class FlightsController extends Controller
 {
@@ -30,6 +31,8 @@ class FlightsController extends Controller
         ]);
         $entity->save();
 
+        Log::channel('user_actions')->info("Flight #".$entity->id." was imported by api");
+
         return new FlightResource($entity);
     }
 
@@ -52,6 +55,8 @@ class FlightsController extends Controller
             $entity->save();
         }
 
+        Log::channel('user_actions')->info(count($flights)." flights was imported by api");
+
         return [
             'data' => ['created_count' => count($flights)]
         ];
@@ -69,6 +74,8 @@ class FlightsController extends Controller
         $entity->fill($request->all());
         $entity->save();
 
+        Log::channel('user_actions')->info("Flight #".$entity->id." was updated by api");
+
         return new FlightResource($entity);
     }
 
@@ -77,6 +84,8 @@ class FlightsController extends Controller
         /** @var Flight $entity */
         $entity = Flight::findOrFail($id);
         $entity->delete();
+
+        Log::channel('user_actions')->info("Flight #$id was removed by api");
 
         return [
             'data' => "Flight #$id successfully removed."

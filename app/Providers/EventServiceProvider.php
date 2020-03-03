@@ -18,12 +18,27 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\ResponsibleDepartmentsAdded' => [
-            'App\Listeners\NotifyAddedRDs'
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\SuccessfulLoginListener',
         ],
-        'App\Events\ResponsibleDepartmentsRemoved' => [
-            'App\Listeners\NotifyRemovedRDs'
+        'Illuminate\Auth\Events\Failed' => [
+            'App\Listeners\FailedLoginListener',
         ],
+        'Illuminate\Auth\Events\Logout' => [
+            'App\Listeners\LogSuccessfulLogout',
+        ],
+        'Illuminate\Auth\Events\PasswordReset' => [
+            'App\Listeners\PasswordResetListener',
+        ],
+        'App\Events\RDsAdded' => [
+            'App\Listeners\RDsAddedListener'
+        ],
+        'App\Events\RDsRemoved' => [
+            'App\Listeners\RDsRemovedListener'
+        ],
+        'App\Events\EventProcessed' => [
+            'App\Listeners\EventProcessedListener'
+        ]
     ];
 
     /**

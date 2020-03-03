@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Department;
-use App\Notifications\UserCredentials;
+use App\Notifications\UserCredentialsNotification;
 use App\User;
 use App\Components\Helpers\PasswordHelper;
 use Illuminate\Database\Seeder;

@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class EventDestroyed extends EventNotification
+class EventDestroyedNotification extends EventNotification
 {
     public function eventEmail()
     {
@@ -24,7 +24,7 @@ class EventDestroyed extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '.$this->event['message'])
-            ->line('Кем удалено: '.$this->user->name)
+            ->line('Кем удалено: '.$this->user['name'])
             ->line('Обращаем Ваше внимание, что данное событие было удалено окончательно и его уже невозможно восстановить. Оно больше не появится в базе данных SMS.')
             ->line('Вы получили это письмо, так как находитесь в группе администраторов, или Ваше подразделение в списке ответственных по данному событию. Либо же это Вы подали заявку на удаление этого события.')
             ->line('Если данное письмо попало к Вам по ошибке, пожалуйста свяжитесь со специалистами, осуществляющими техническое обслуживание базы данных SMS.')
@@ -40,7 +40,7 @@ class EventDestroyed extends EventNotification
             ->line('Номер: '.$this->event['id'])
             ->line('Дата: '.$this->event['formatted_date'])
             ->line('Текст сообщения: '.$this->event['message'])
-            ->line('Кем удалено: '.$this->user->name)
+            ->line('Кем удалено: '.$this->user['name'])
             ->line('Обращаем Ваше внимание, что данное событие было удалено окончательно.')
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }
