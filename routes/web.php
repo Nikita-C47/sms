@@ -79,6 +79,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout-get');
 
+    Route::get('/events/filters', 'EventsController@filters')->name('event-filters');
+    Route::post('/events/filters', 'EventsController@setFilters');
     Route::get('/events/search', 'EventsController@search')->name('search-event');
     Route::post('/events/search', 'EventsController@find')->name('find-event');
     Route::post('/events/get-categories', 'EventsController@getEventCategories')->name('get-event-categories');

@@ -3,10 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Models\Events\Event;
+use App\Models\Events\EventResponsibleDepartment;
 use App\Models\Flight;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TestCommand extends Command
@@ -42,6 +46,22 @@ class TestCommand extends Command
      */
     public function handle()
     {
+        /*
+        foreach ($groupedFilters as &$filter) {
+            $filter->groupBy('value');
+        }*/
+
+//        $events = Event::with('flight')
+//            ->join(
+//                'flights',
+//                'events.flight_id',
+//                '=',
+//                'flights.id'
+//            )
+//            ->where('flights.captain', 'Иванов Иван Иванович')
+//            ->select('events.id')
+//            ->get();
+
 //        $events = Event::with('flight')
 //            ->join(
 //                'event_responsible_departments',
@@ -63,7 +83,7 @@ class TestCommand extends Command
 //        foreach ($events as $event) {
 //            $this->info($event->id);
 //        }
-
+//
 //        $events = Event::with('responsible_departments')
 //            ->join(
 //                'event_responsible_departments',

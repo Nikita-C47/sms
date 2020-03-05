@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Department;
 use App\Models\Events\Event;
+use App\Models\Events\EventFilter;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,6 +30,7 @@ use Illuminate\Notifications\Notifiable;
  * @property Event[] $created_events Массив связных моделей созданных пользователем событий
  * @property Event[] $updated_events Массив связных моделей обновленных пользователем событий
  * @property Department $department Связная модель подразделения, в котором состоит пользователь
+ * @property EventFilter[] $event_filters Связная модель фильтров списка событий данного пользователя
  *
  * @method static Builder real() Показывает только реальных пользователей
  * @method static Builder service() Показывает только сервисных пользователей
@@ -84,6 +86,11 @@ class User extends Authenticatable
     public function updated_events()
     {
         return $this->hasMany('App\Models\Events\Event', 'updated_by');
+    }
+
+    public function event_filters()
+    {
+        return $this->hasMany('App\Models\Events\EventFilter');
     }
 
     /**

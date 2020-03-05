@@ -41,6 +41,8 @@ Vue.component('event-form', require('./components/EventFormComponent.vue').defau
 Vue.component('event-datepicker', require('./components/EventDatepickerComponent.vue').default);
 Vue.component('event-edit-form', require('./components/EventEditFormComponent.vue').default);
 Vue.component('notification', require('./components/NotificationComponent.vue').default);
+Vue.component('select-all', require('./components/SelectAllComponent.vue').default);
+Vue.component('dates-range', require('./components/DatesRangeComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

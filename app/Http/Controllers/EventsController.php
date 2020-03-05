@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\Helpers\EventFiltersHelper;
 use App\Events\EventProcessed;
 use App\Events\RDsAdded;
 use App\Events\RDsRemoved;
+use App\Http\Requests\EventFiltersFormRequest;
 use App\Http\Requests\Events\AnonymousEventFormRequest;
 use App\Http\Requests\Events\EventCategoriesFormRequest;
 use App\Http\Requests\Events\FindEventFormRequest;
@@ -15,19 +17,19 @@ use App\Models\Department;
 use App\Models\Events\Event;
 use App\Models\Events\EventAttachment;
 use App\Models\Events\EventCategory;
+use App\Models\Events\EventFilter;
 use App\Models\Events\EventMeasure;
 use App\Models\Events\EventRelation;
 use App\Models\Events\EventResponsibleDepartment;
 use App\Models\Events\EventType;
 use App\Models\Flight;
-use App\Notifications\EventProcessedNotification;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class EventsController extends Controller
@@ -42,20 +44,24 @@ class EventsController extends Controller
         /** @var \App\User $user */
         $user = Auth::user();
 
+       // DB::enableQueryLog();
         $events = Event::approved()->with([
             'flight',
             'relation',
             'department',
             'user_created_by',
             'responsible_departments'
-        ])->orderBy('updated_at', 'desc');
+        ])->select(['events.*']);
+
+        $events = $this->loadFilters($events);
 
         if($user->access_level === 'user') {
-            $events = $events->where('created_by', $user->id);
+            $events = $events->where('events.created_by', $user->id);
         }
 
-        $events = $events->paginate(10);
-
+        $events = $events->orderBy('events.updated_at', 'desc')->paginate(10);
+        //dd($events);
+        //dd(DB::getQueryLog());
         return view('events.index', [
             'events' => $events
         ]);
@@ -326,10 +332,6 @@ class EventsController extends Controller
      */
     public function update(EventFormRequest $request, $id)
     {
-//        $blackfire = new \Blackfire\Client();
-//
-//        $probe = $blackfire->createProbe();
-
         // Получаем указанное событие
         /** @var Event $event */
         $event = Event::with('responsible_departments')->findOrFail($id);
@@ -450,17 +452,6 @@ class EventsController extends Controller
             return $event;
         });
 
-        /*
-        SendEventNotificationsJob::dispatch(
-            EventUpdatedNotifier::class,
-            $event,
-            [
-                'added_departments' => $newRDs->diff($existingRDs)->toArray(),
-                'removed_departments' => $existingRDs->diff($newRDs)->toArray()
-            ]
-        );
-        */
-
         // 4. Генерируем события
 
         // Событие, инициирующее отправку уведомлений пользователям новых ответственных подразделений
@@ -473,8 +464,6 @@ class EventsController extends Controller
             'type' => 'success',
             'text' => 'Событие №'.$id.' успешно обновлено'
         ]);
-
-        //$blackfire->endProbe($probe);
 
         // Возвращаем успешный ответ
         return response('OK', 200);
@@ -547,7 +536,6 @@ class EventsController extends Controller
         ]);
     }
 
-    // TODO: Добавить интерфейс для редактирования категорий менеджером событий
     public function getEventCategories(EventCategoriesFormRequest $request)
     {
         $departmentId = $request->get('department_id');
@@ -562,6 +550,219 @@ class EventsController extends Controller
         $flights = Flight::whereDate('departure_datetime', $date)->get();
 
         return response()->json(['flights' => $flights]);
+    }
+
+    // TODO: Добавить кэширование фильтров
+    public function filters()
+    {
+        $helper = new EventFiltersHelper();
+        $boards = Flight::distinct('board')->get();
+        $captains = Flight::distinct('captain')->get();
+        $airports = Event::whereNotNull('airport')->distinct('airport')->get();
+        // RESPONSIBLE DEPARTMENTS!!!!
+        $departments = EventResponsibleDepartment::with('department')->distinct('department_id')->get();
+        $users = Event::with('user_created_by')->distinct('created_by')->get();
+        $relations = Event::with('relation')->whereNotNull('relation_id')->distinct('relation_id')->get();
+
+        return view('events.filters', [
+            'boards' => $boards,
+            'captains' => $captains,
+            'airports' => $airports,
+            'statuses' => Event::EVENT_STATUSES,
+            'departments' => $departments,
+            'users' => $users,
+            'relations' => $relations,
+            'filters' => $helper->formatFilters()
+        ]);
+    }
+
+    public function setFilters(EventFiltersFormRequest $request)
+    {
+        // Запускаем транзакцию
+        DB::transaction(function () use ($request) {
+            // Удаляем текущие фильтры
+            EventFilter::where('user_id', Auth::user()->getAuthIdentifier())->delete();
+            // Сохраняем начальную дату
+            $this->saveDateFilter($request, 'date_from');
+            // Сохраняем конечную дату
+            $this->saveDateFilter($request, 'date_to');
+            // Сохраняем борты
+            $this->saveFilter($request, 'boards');
+            // Сохраняем КВС
+            $this->saveFilter($request, 'captains');
+            // Сохраняем "Где произошло"
+            $this->saveFilter($request, 'airports');
+            // Сохраняем статусы
+            $this->saveFilter($request, 'statuses');
+            // Сохраняем ответственные подразделения
+            $this->saveFilter($request, 'responsible_departments');
+            // Сохраняем пользователей
+            $this->saveFilter($request, 'users');
+            // Сохраняем к чему относится
+            $this->saveFilter($request, 'relations');
+            // Сохраняем фильтр по прикрепленным файлам
+            if($request->has('attachments') && filled($request->get('attachments'))) {
+                $filter = new EventFilter([
+                    'user_id' => Auth::user()->getAuthIdentifier(),
+                    'key' => 'attachments',
+                    'value' => $request->get('attachments')
+                ]);
+                $filter->save();
+            }
+        });
+
+        return redirect()->route('home')->with('alert', [
+            'type' => 'success',
+            'text' => 'Фильтры были успешно обновлены'
+        ]);
+
+    }
+
+    private function loadFilters(Builder $query)
+    {
+        $helper = new EventFiltersHelper();
+        $filters = $helper->filters;
+
+        if($helper->joinFlights) {
+            $query = $query->join(
+                'flights',
+                'events.flight_id',
+                '=',
+                'flights.id'
+            );
+        }
+
+        if($helper->joinResponsibleDepartments) {
+            $query = $query->join(
+                'event_responsible_departments',
+                'events.id',
+                '=',
+                'event_responsible_departments.event_id'
+            );
+        }
+
+        foreach ($filters as $column => $filter) {
+            $query = $this->loadFilter($query, $column, $filter);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $column
+     * @param $filter
+     * @return Builder|\Illuminate\Database\Query\Builder
+     * @throws \Exception
+     */
+    private function loadFilter(Builder $query, string $column, $filter)
+    {
+        switch ($column) {
+            case "date_from": {
+                return $query->whereDate('date', '>=', $filter);
+                break;
+            }
+            case "date_to": {
+                return $query->whereDate('date', '<=', $filter);
+                break;
+            }
+            case "boards": {
+                $query = $this->getFilter($query, 'flights.board', $filter);
+                break;
+            }
+            case "captains": {
+                $query = $this->getFilter($query, 'flights.captain', $filter);
+                break;
+            }
+            case "airports": {
+                $query = $this->getFilter($query, 'events.airport', $filter);
+                break;
+            }
+            case "statuses": {
+                $query = $this->getFilter($query, 'events.status', $filter);
+                break;
+            }
+            case "responsible_departments": {
+                if(filled($filter[0])) {
+                    $query = $query->whereIn('event_responsible_departments.department_id', $filter);
+                } else {
+                    $query = $query->doesntHave('responsible_departments');
+                }
+                break;
+            }
+            case "users": {
+                $query = $this->getFilter($query, 'events.created_by', $filter);
+                break;
+            }
+            case "relations": {
+                $query = $this->getFilter($query, 'events.relation_id', $filter);
+                break;
+            }
+            case "attachments": {
+                if($filter === 1) {
+                    $query = $query->has('attachments');
+                } else {
+                    $query = $query->doesntHave('attachments');
+                }
+                break;
+            }
+            default: {
+                throw new \Exception("Unknown database filter");
+            }
+        }
+        return $query;
+    }
+
+    private function getFilter(Builder $query, string $dbColumn, $filter)
+    {
+        if(filled($filter[0])) {
+            $query = $query->whereIn($dbColumn, $filter);
+        } else {
+            $query = $query->whereNull($dbColumn);
+        }
+        return $query;
+    }
+
+    private function saveFilter(EventFiltersFormRequest $request, string $fieldName)
+    {
+        // Если отмечен чекбокс "все", не нужно сохранять отдельный фильтр
+        if($request->has($fieldName . '-all')) {
+            return;
+        }
+
+        if(!$request->has($fieldName)) {
+            $filter = new EventFilter([
+                'user_id' => Auth::user()->getAuthIdentifier(),
+                'key' => $fieldName
+            ]);
+            $filter->save();
+
+        } else {
+            foreach ($request->get($fieldName) as $value) {
+                $filter = new EventFilter([
+                    'user_id' => Auth::user()->getAuthIdentifier(),
+                    'key' => $fieldName,
+                    'value' => $value
+                ]);
+                $filter->save();
+            }
+        }
+    }
+
+    private function saveDateFilter(EventFiltersFormRequest $request, string $fieldName)
+    {
+        // Если выбрана дата
+        if(filled($request->get($fieldName))) {
+            // Инициализируем дату
+            $date = Carbon::createFromFormat('d.m.Y', $request->get($fieldName));
+            // Добавляем фильтр
+            $filter = new EventFilter([
+                'user_id' => Auth::user()->getAuthIdentifier(),
+                'key' => $fieldName,
+                'value' => $date->startOfDay()->toDateTimeString()
+            ]);
+            $filter->save();
+        }
     }
 
     /**

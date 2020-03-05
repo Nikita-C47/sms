@@ -9,10 +9,15 @@
             <a href="{{ route('create-event') }}" class="alert-link">
                 создать новое
             </a>.
+            Список событий также может быть пустым из-за установленных Вами
+            <a href="{{ route('event-filters') }}" class="alert-link">фильтров</a>.
         </div>
     @else
         <a href="{{ route('create-event') }}" class="btn btn-success">
             Добавить событие
+        </a>
+        <a href="{{ route('event-filters') }}" class="btn btn-info">
+            <i class="fas fa-filter"></i> Фильтры
         </a>
         <hr>
         <div class="table-responsive">
