@@ -5,10 +5,14 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * Класс, представляющий провайдер сервисов аутентификации.
+ * @package App\Providers Провайдеры приложения.
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
+     * Маппинги политик приложения.
      *
      * @var array
      */
@@ -17,7 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any authentication / authorization services.
+     * Регистрирует сервисы по аутентификации / авторизации
      *
      * @return void
      */

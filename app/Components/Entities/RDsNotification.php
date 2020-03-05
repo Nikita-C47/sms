@@ -7,18 +7,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
+/**
+ * Класс, представляющий уведомление о манипуляции с ответственными подразделениями события.
+ * @package App\Components\Entities Классы-абстракции для определения сущностей с общими методами.
+ */
 abstract class RDsNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-
+    /** @var array $event массив с данными о событии. */
     protected $event;
+    /** @var array $user массив с данными о пользователе. */
     protected $user;
 
     /**
-     * Create a new notification instance.
+     * Создает новый экземпляр класса.
      *
-     * @param array $event
-     * @param array $user
+     * @param array $event событие.
+     * @param array $user пользователь.
      */
     public function __construct(array $event, array $user)
     {
@@ -51,10 +56,10 @@ abstract class RDsNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email-сообщения.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage сообщение.
      */
     abstract public function toMail($notifiable);
 }

@@ -5,13 +5,17 @@ namespace App\Notifications;
 use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Класс, представляющий уведомление о создании события.
+ * @package App\Notifications Уведомления приложения.
+ */
 class EventCreatedNotification extends EventNotification
 {
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
      */
     public function toMail($notifiable)
     {
@@ -25,6 +29,11 @@ class EventCreatedNotification extends EventNotification
         }
     }
 
+    /**
+     * Возвращает письмо для пользователя, создавшего событие.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     public function emailToCreator()
     {
         return (new MailMessage)
@@ -38,6 +47,11 @@ class EventCreatedNotification extends EventNotification
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }
 
+    /**
+     * Возвращает письмо с информацией о действии над событием.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     public function eventEmail()
     {
         return (new MailMessage)
@@ -55,6 +69,11 @@ class EventCreatedNotification extends EventNotification
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }
 
+    /**
+     * Возвращает письмо при создании анонимного события.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     public function anonymousEventMail()
     {
         return (new MailMessage)

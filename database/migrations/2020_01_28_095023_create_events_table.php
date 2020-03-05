@@ -4,15 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Класс, представляюший миграцию создания таблицы событий.
+ */
 class CreateEventsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Запускает миграцию.
      *
      * @return void
      */
     public function up()
     {
+        // События
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('date');
@@ -47,7 +51,7 @@ class CreateEventsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Откатывает миграцию.
      *
      * @return void
      */

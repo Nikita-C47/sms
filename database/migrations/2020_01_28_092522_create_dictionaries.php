@@ -4,10 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Класс, представляющий миграцию создания таблиц-справочников для событий.
+ */
 class CreateDictionaries extends Migration
 {
     /**
-     * Run the migrations.
+     * Запускает миграцию.
      *
      * @return void
      */
@@ -19,13 +22,12 @@ class CreateDictionaries extends Migration
             $table->string('name');
             $table->timestamps();
         });
-
+        // ВК на подразделение в таблице пользователей
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('department_id')->after('access_level')->nullable();
 
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
-
         // Типы событий
         Schema::create('event_types', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -65,7 +67,7 @@ class CreateDictionaries extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Откатывает миграцию.
      *
      * @return void
      */

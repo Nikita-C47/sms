@@ -235,10 +235,11 @@
 </template>
 
 <script>
+    // Импортируем примеси
     import Helpers from './mixins/Helpers';
     import Validation from './mixins/Validation';
     import EventForm from './mixins/EventForm';
-
+    // Компонент формы добавления события
     export default {
         name: "EventFormComponent",
         mixins:[
@@ -246,18 +247,27 @@
             Validation,
             EventForm
         ],
+        // Свойства
         props: {
+            // ID формы
             form_id: String
         },
+        // Данные
         data: function () {
             return {
+                // Связь с рейсом
                 flight_connection: false,
+                // ID рейса
                 flight_id: "",
+                // Где произошло
                 airport: "",
+                // ID подразделения
                 department_id: ""
             }
         },
+        // Хук монтирования компонента
         mounted() {
+            // Инициализируем дату
             $("#date").datepicker({
                 language: "ru",
                 maxDate: new Date(),

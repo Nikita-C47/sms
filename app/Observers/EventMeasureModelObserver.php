@@ -6,6 +6,10 @@ use App\Models\Events\EventMeasure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Класс, представляющий наблюдатель за моделью мероприятия по событию.
+ * @package App\Observers
+ */
 class EventMeasureModelObserver
 {
     /**
@@ -31,15 +35,16 @@ class EventMeasureModelObserver
     }
 
     /**
-     * Handle the event measure "deleted" event.
+     * Обрабатывает событие удаления модели.
      *
-     * @param  \App\Models\Events\EventMeasure  $eventMeasure
+     * @param \App\Models\Events\EventMeasure $eventMeasure модель.
      * @return void
      */
     public function deleted(EventMeasure $eventMeasure)
     {
         /** @var \App\User $user */
         $user = Auth::user();
+        // Пишем сообщение в лог
         $message = 'User '.$user->name.' removed measure "'.$eventMeasure->text.'" from event '.$eventMeasure->event_id;
         Log::channel('user_actions')->info($message);
     }

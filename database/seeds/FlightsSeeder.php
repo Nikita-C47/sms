@@ -5,17 +5,19 @@ use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
+/**
+ * Класс, представляющий сидер рейсов приложения.
+ */
 class FlightsSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Запускает заполнение базы данных.
      *
      * @return void
      * @throws Exception
      */
     public function run()
     {
-        // TODO: Добавить задание по генерации рейсов на каждый день
         // Заводим генератор
         $faker = Factory::create(config('app.faker_locale'));
         // Массив с рейсами. Сделаем их расписанием

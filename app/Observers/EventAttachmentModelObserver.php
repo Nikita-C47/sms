@@ -6,6 +6,10 @@ use App\Models\Events\EventAttachment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Класс, представляющий наблюдатель за моделью вложения по событию.
+ * @package App\Observers Классы-наблюдатели для моделей.
+ */
 class EventAttachmentModelObserver
 {
     /**
@@ -31,15 +35,16 @@ class EventAttachmentModelObserver
     }
 
     /**
-     * Handle the event attachment "deleted" event.
+     * Обрабатывает событие удаления модели.
      *
-     * @param  \App\Models\Events\EventAttachment  $eventAttachment
+     * @param \App\Models\Events\EventAttachment $eventAttachment модель.
      * @return void
      */
     public function deleted(EventAttachment $eventAttachment)
     {
         /** @var \App\User $user */
         $user = Auth::user();
+        // Пишем сообщение в лог
         $message = 'User '.$user->name.' removed attachment '.$eventAttachment->original_name.' from event '.$eventAttachment->event_id;
         Log::channel('user_actions')->info($message);
         // Удаляем вложение из файловой системы

@@ -13,7 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+// Маршруты, доступные через API
 Route::middleware('auth:api')->group(function () {
+
+    // Рейсы
     Route::get('/flights', 'Api\FlightsController@index');
     Route::get('/flights/{id?}', 'Api\FlightsController@view');
     Route::post('/flights', 'Api\FlightsController@create');

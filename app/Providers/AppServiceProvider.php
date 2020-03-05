@@ -11,10 +11,14 @@ use App\Observers\EventMeasureModelObserver;
 use App\Observers\EventModelObserver;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Класс, представляющий провайдер сервисов приложения.
+ * @package App\Providers Провайдеры приложения.
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Регистрирует сервисы приложения.
      *
      * @return void
      */
@@ -27,14 +31,17 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Загружает сервисы приложения..
      *
      * @return void
      */
     public function boot()
     {
+        // Регистрируем наблюдатель для модели события
         Event::observe(EventModelObserver::class);
+        // Регистрируем наблюдатель для модели мероприятия по событию
         EventMeasure::observe(EventMeasureModelObserver::class);
+        // Регистрируем наблюдатель для модели вложения события
         EventAttachment::observe(EventAttachmentModelObserver::class);
     }
 }

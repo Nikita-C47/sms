@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DictionaryFormRequest;
 use App\Models\Events\EventType;
 
+/**
+ * Класс, предатвляющий контроллер типов событий.
+ * @package App\Http\Controllers\Dictionaries Контроллеры для моделей-справочников.
+ */
 class EventTypesController extends Controller
 {
+    /** @var array $entityData русифицированные названия элементов справочников. */
     protected $entityData = [
         'entityName' => 'тип событий',
         'entitiesName' => 'типов событий',
@@ -16,14 +21,15 @@ class EventTypesController extends Controller
     ];
 
     /**
-     * Display a listing of the resource.
+     * Отображает список ресурсов.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        // Получаем ресурсы, разбитые по 10 штук
         $entities = EventType::orderBy('id', 'desc')->paginate(10);
-
+        // Возвращаем представление
         return view('dictionaries.index', [
             'entities' => $entities,
             'entityType' => $this->entityData['entityType'],
@@ -32,7 +38,7 @@ class EventTypesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Отображает форму добавления ресурса.
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,18 +51,19 @@ class EventTypesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохраняет ресурс в БД.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param DictionaryFormRequest $request запрос на добавление ресурса.
      * @return \Illuminate\Http\Response
      */
     public function store(DictionaryFormRequest $request)
     {
+        // Создаем ресурс
         $entity = new EventType([
             'name' => $request->get('name')
         ]);
         $entity->save();
-
+        // Возвращаем редирект на список ресурсов с уведомлением
         return redirect()->route($this->entityData['entitiesType'])->with('alert', [
             'type' => 'success',
             'text' => 'Новый тип событий успешно добавлен'
@@ -64,14 +71,16 @@ class EventTypesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Отображает форму редактирования ресурса.
      *
-     * @param  int  $id
+     * @param int $id ID мероприятия в БД.
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
+        // Ищем мероприятие по его ID
         $entity = EventType::findOrFail($id);
+        // Возвращаем форму редактирования
         return view('dictionaries.edit', [
             'entity' => $entity,
             'entityName' => $this->entityData['entityName'],
@@ -80,19 +89,21 @@ class EventTypesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновляет указанный ресурс в БД.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param DictionaryFormRequest $request запрос на обновление ресурса.
+     * @param int $id ID ресурса.
      * @return \Illuminate\Http\Response
      */
     public function update(DictionaryFormRequest $request, $id)
     {
+        // Ищем ресурс по ID.
         /** @var EventType $entity */
         $entity = EventType::findOrFail($id);
+        // Обновляем его
         $entity->name = $request->get('name');
         $entity->save();
-
+        // Возвращаем редирект на список ресурсов с уведомлением
         return redirect()->route($this->entityData['entitiesType'])->with('alert', [
             'type' => 'success',
             'text' => 'Тип событий №'.$entity->id.' успешно обновлён'
@@ -100,17 +111,20 @@ class EventTypesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаляет указанный ресурс из БД.
      *
-     * @param  int  $id
+     * @param int $id ID ресурса.
      * @return \Illuminate\Http\Response
+     * @throws \Exception исключение в случае неудачного удаления.
      */
     public function destroy($id)
     {
+        // Ищем ресурс
         /** @var EventType $entity */
         $entity = EventType::findOrFail($id);
+        // Удаляем его
         $entity->delete();
-
+        // Возвращаем редирект на список ресурсов с уведомлением
         return redirect()->route($this->entityData['entitiesType'])->with('alert', [
             'type' => 'success',
             'text' => 'Тип событий "'.$entity->name.'" успешно удалён'

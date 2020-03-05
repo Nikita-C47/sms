@@ -7,8 +7,8 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
- * Класс с собственной фабркой ответа для возможности отдавать файлы на кириллице
- * @package App\Components\Inherited Классы, переопределяющие стандартный функционал
+ * Класс с собственной фабркой ответа для возможности отдавать файлы на кириллице.
+ * @package App\Components\Inherited Классы, переопределяющие стандартный функционал.
  */
 class CyrillicResponseFactory extends ResponseFactory
 {

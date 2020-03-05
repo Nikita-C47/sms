@@ -5,20 +5,31 @@ namespace App\Http\Requests\Api;
 use App\Components\Entities\ApiRequest;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Класс, представляющий запрос на добавление рейсов через API.
+ * @package App\Http\Requests\Api Запросы, отправляемые через API.
+ */
 class FlightRequest extends ApiRequest
 {
+    /**
+     * Возвращает флаг того, что это загрузка нескольких рейсов
+     *
+     * @return bool
+     */
     protected function isMultiple()
     {
+        // Проверяем загружен ли маршрут по добавлению нескольких рейсов
         return Route::currentRouteName() === 'load-flights';
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Возвращает правила валидации.
      *
-     * @return array
+     * @return array массив с правилами валидации.
      */
     public function rules()
     {
+        // Если это добавление нескольких рейсов - выдаем правила с массивом
         if($this->isMultiple()) {
             return [
                 'flights' => 'array',
@@ -31,14 +42,21 @@ class FlightRequest extends ApiRequest
                 'flights.*.captain' => 'required'
             ];
         }
-
+        // Массив правил валидации
         return [
+            // Дата вылета
             'departure_datetime' => 'required|date_format:Y-m-d H:i:s',
+            // Дата прилета
             'arrival_datetime' => 'required|date_format:Y-m-d H:i:s',
+            // Номер рейса
             'number' => 'required',
+            // Бортовой номер ВС
             'board' => 'required',
+            // Аэропорт вылета
             'departure_airport' => 'required',
+            // Аэропорт прилета
             'arrival_airport' => 'required',
+            // КВС
             'captain' => 'required'
         ];
     }

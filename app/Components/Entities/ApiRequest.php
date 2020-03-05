@@ -7,15 +7,15 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Абстрактный класс, представляющий запрос к API
- * @package App\Components\Entities Классы-абстракции для определения сущностей с общими методами
+ * Абстрактный класс, представляющий запрос к API.
+ * @package App\Components\Entities Классы-абстракции для определения сущностей с общими методами.
  */
 abstract class ApiRequest extends FormRequest
 {
     /**
-     * Определяет, авторизован ли пользователь для выполнения данного запроса
+     * Определяет, авторизован ли пользователь для выполнения данного запроса.
      *
-     * @return bool
+     * @return bool флаг того, что запрос можно выполнять.
      */
     public function authorize()
     {
@@ -30,9 +30,9 @@ abstract class ApiRequest extends FormRequest
     }
 
     /**
-     * Возвращает массив с правилами валидации для конкретного запроса
+     * Возвращает массив с правилами валидации для конкретного запроса.
      *
-     * @return array массив правил валидации
+     * @return array массив правил валидации.
      */
     abstract public function rules();
 }

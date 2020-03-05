@@ -113,7 +113,6 @@ return [
     */
 
     'password_timeout' => 10800,
-
+    // Пользователь для API приложения
     'api_user' => 'api'
-
 ];

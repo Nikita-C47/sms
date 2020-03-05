@@ -6,10 +6,13 @@ use App\Models\Events\EventRelation;
 use App\Models\Events\EventType;
 use Illuminate\Database\Seeder;
 
+/**
+ * Класс, представляющий сидер справочников приложения.
+ */
 class DictionariesSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Запускает заполнение базы данных.
      *
      * @return void
      */

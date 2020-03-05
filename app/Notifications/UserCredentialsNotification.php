@@ -7,6 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * Класс, представляющий уведомление о логине и пароле для пользователя.
+ * @package App\Notifications Уведомления приложения.
+ */
 class UserCredentialsNotification extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -16,7 +20,7 @@ class UserCredentialsNotification extends Notification implements ShouldQueue
     private $passwordChanged;
 
     /**
-     * Create a new notification instance.
+     * Создает новый экземпляр класса.
      *
      * @param string $password Пароль, установленный пользователю
      * @param bool $passwordChanged Флаг того, что пароль изменен
@@ -39,14 +43,13 @@ class UserCredentialsNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
      */
     public function toMail($notifiable)
     {
-        // TODO: Заменить url на адрес формы входа и исппавить шаблоны
         return (new MailMessage)
                     ->subject($this->passwordChanged ? 'Ваши новые учетные данные в базе данных SMS' : 'Добро пожаловать в базу данных SMS')
                     ->greeting($this->passwordChanged ? 'Здравствуйте!' : 'Добро пожаловать в базу данных SMS!')

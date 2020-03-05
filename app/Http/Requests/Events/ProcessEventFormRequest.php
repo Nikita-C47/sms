@@ -5,26 +5,32 @@ namespace App\Http\Requests\Events;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * Класс, представляющий запрос на обработку события.
+ * @package App\Http\Requests\Events Запросы, связанные с событиями.
+ */
 class ProcessEventFormRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Определяет, может ли пользователь выполнять этот запрос.
      *
      * @return bool
      */
     public function authorize()
     {
+        // Выполнять запрос может только менеджер событий
         return Gate::allows('manager');
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Возвращает правила валидации.
      *
-     * @return array
+     * @return array массив с правилами валидации.
      */
     public function rules()
     {
         return [
+            // Статус одобрения события
             'approved' => 'required|boolean'
         ];
     }

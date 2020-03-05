@@ -11,31 +11,30 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Класс, представляющий событие манипуляции с ответственными подразделениями по событию (добавление/удаление).
+ * @package App\Components\Concretes Классы-основы для наследования другими классами.
+ */
 class RDsEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    /**
-     * @var array $departments
-     */
+    /**@var array $departments массив с ключами подразделений, которые были добавлены/удалены). */
     public $departments;
-    /**
-     * @var Event $event
-     */
+    /** @var Event $event событие, к которому относятся подразделения. */
     public $event;
-    /**
-     * @var User
-     */
+    /** @var User пользователь, который произвел манипуляцию с событием. */
     public $user;
 
     /**
-     * Create a new event instance.
+     * Создает новый экземпляр класса.
      *
-     * @param array $departments
-     * @param Event $event
-     * @param Authenticatable $user
+     * @param array $departments массив с ключами подразделений.
+     * @param Event $event событие.
+     * @param Authenticatable $user пользователь.
      */
     public function __construct(array $departments, Event $event, Authenticatable $user)
     {
+        // Устанавливаем поля
         $this->departments = $departments;
         $this->event = $event;
         $this->user = $user;

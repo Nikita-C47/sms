@@ -2,24 +2,29 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\UserCredentialsNotification;
 use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Components\Helpers\PasswordHelper;
 
+/**
+ * Класс, представляющий консольную команду назначения администратора по-умолчанию.
+ * @package App\Console\Commands Консольные команды приложения.
+ */
 class AdminAssign extends Command
 {
     use PasswordHelper;
     /**
-     * The name and signature of the console command.
+     * Название и сигнатура команды.
      *
      * @var string
      */
     protected $signature = 'admin:assign {email}';
 
     /**
-     * The console command description.
+     * Описание консольной команды.
      *
      * @var string
      */
@@ -36,23 +41,25 @@ class AdminAssign extends Command
     }
 
     /**
-     * Execute the console command.
+     * Выполняет консольную команду.
      *
      * @return mixed
      */
     public function handle()
     {
+        // Получаем email администратора
         $email = $this->argument('email');
-
+        // Собираем валидатор для него
         $validator = Validator::make(
             ['email' => $email],
             ['email' => 'required|email']
         );
-
+        // Если email не прошел валидацию - информируем об этом
         if($validator->fails()) {
             $this->error("You must specify real email after command signature. For example - admin:create admin@airline.com");
             return 1;
         } else {
+            // Иначе - спрашиваем подтверждение
             if($this->confirm("Do you really wish to assign user with email $email as admin?")) {
                 // Генерируем пароль
                 $password = $this->generatePassword();
@@ -66,7 +73,13 @@ class AdminAssign extends Command
                     'access_level' => 'admin'
                 ]);
                 $newUser->save();
+                // Выдаем информацию в консоль
                 $this->info("Embedded admin successfully created! Embedded admin password: $password");
+                // Спрашиваем нужно ли отправить учетные данные на указанный email
+                if($this->confirm("Do you want to send notification with credentials on specified email?")) {
+                    // Если да - отправляем письмо
+                    $newUser->notify(new UserCredentialsNotification($password));
+                }
             }
             return 0;
         }

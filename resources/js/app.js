@@ -7,9 +7,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+// Календарь
 window.airDatePicker = require('air-datepicker');
+// Moment
 window.moment = require('moment');
+// Рувсификация календаря
 $.fn.datepicker.language['ru'] =  {
     days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
     daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
@@ -34,6 +36,8 @@ $.fn.datepicker.language['ru'] =  {
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+// Компоненты Vue
 
 Vue.component('confirmation-modal', require('./components/ConfirmationModalComponent.vue').default);
 Vue.component('csrf-field', require('./components/CsrfFieldComponent.vue').default);

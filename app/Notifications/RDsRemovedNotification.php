@@ -5,13 +5,17 @@ namespace App\Notifications;
 use App\Components\Entities\RDsNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Класс, представляющий уведомление об удалении ответственного подразделении по событию.
+ * @package App\Notifications Уведомления приложения.
+ */
 class RDsRemovedNotification extends RDsNotification
 {
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
      */
     public function toMail($notifiable)
     {

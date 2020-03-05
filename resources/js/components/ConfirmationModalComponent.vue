@@ -32,17 +32,25 @@
 </template>
 
 <script>
+    // Компонент модального окна подтверждения удаления
     export default {
+        // Свойства
         props: {
+            // ID
             id: Number,
+            // Название удаляемой записи
             entity_name: String,
+            // Адрес отправки формы удаления
             action: String
         },
         name: "ConfirmationModalComponent",
+        // Методы
         methods: {
+            // Генерирует ID модального окна удаления
             calculateId: function(id) {
                 return "deleteConfirmationId"+id;
             },
+            // Показывает модальное окно
             showModal: function (id) {
                 $("#"+this.calculateId(id)).modal('show');
             }

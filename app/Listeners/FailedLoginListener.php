@@ -6,6 +6,10 @@ use Illuminate\Auth\Events\Failed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Класс, представляющий слушатель события неудачной авторизации пользователя.
+ * @package App\Listeners Классы-слушатели.
+ */
 class FailedLoginListener implements ShouldQueue
 {
     /**
@@ -19,13 +23,14 @@ class FailedLoginListener implements ShouldQueue
     }
 
     /**
-     * Handle the event.
+     * Обрабатывает событие.
      *
-     * @param  Failed  $event
+     * @param Failed $event объект события.
      * @return void
      */
     public function handle(Failed $event)
     {
+        // Пишем сообщение в лог
         Log::channel('user_actions')
             ->info("Failed login attempt for email ".$event->credentials['email']);
     }

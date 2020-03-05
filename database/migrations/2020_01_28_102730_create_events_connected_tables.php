@@ -4,15 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Класс, представляющий миграцию таблиц, относящихся к событиям.
+ */
 class CreateEventsConnectedTables extends Migration
 {
     /**
-     * Run the migrations.
+     * Запускает миграцию.
      *
      * @return void
      */
     public function up()
     {
+        // Мероприятия по событию
         Schema::create('event_measures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('event_id');
@@ -23,7 +27,7 @@ class CreateEventsConnectedTables extends Migration
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
         });
-
+        // Ответственные подразделения по событию
         Schema::create('event_responsible_departments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('event_id');
@@ -35,7 +39,7 @@ class CreateEventsConnectedTables extends Migration
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
         });
-
+        // Вложения события
         Schema::create('event_attachments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('event_id');
@@ -51,7 +55,7 @@ class CreateEventsConnectedTables extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Откатывает миграцию.
      *
      * @return void
      */

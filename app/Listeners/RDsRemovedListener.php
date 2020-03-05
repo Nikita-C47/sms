@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\Notification;
 class RDsRemovedListener extends RDsListener
 {
     /**
-     * Sends notifications for users
+     * Отправляет пользователям уведомления.
      *
-     * @param \Illuminate\Support\Collection|array|mixed $users
-     * @param array $event
-     * @param array $user
+     * @param \Illuminate\Support\Collection|array|mixed $users список пользователей для уведомления.
+     * @param array $event массив с данными о событии
+     * @param array $user массив с данными о пользователе
      * @return void
      */
     public function sendNotifications($users, array $event, array $user)
     {
+        // Отправляем соответствующее уведомление
         Notification::send($users, new RDsRemovedNotification($event, $user));
     }
 }

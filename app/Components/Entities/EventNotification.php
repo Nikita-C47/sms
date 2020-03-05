@@ -6,22 +6,27 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
+/**
+ * Класс, представляющий уведомление по событию.
+ * @package App\Components\Entities Классы-абстракции для определения сущностей с общими методами.
+ */
 abstract class EventNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-
+    /** @var array массив, представляющий данные о событии. */
     protected $event;
-    /** @var array|null $user */
+    /** @var array|null $user массив, представляющий данные о пользователе (либо null при создании анонимного события). */
     protected $user;
 
     /**
-     * Create a new notification instance.
+     * Создает новый экземпляр класса.
      *
-     * @param array $event
-     * @param array|null $user
+     * @param array $event событие.
+     * @param array|null $user пользователь.
      */
     public function __construct(array $event, array $user = null)
     {
+        // Инициализируем поля
         $this->event = $event;
         $this->user = $user;
     }
@@ -38,16 +43,19 @@ abstract class EventNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
      */
     public function toMail($notifiable)
     {
+        // Если событие анонимное
         if($this->event['anonymous']) {
+            // Нет нужды проверять кому идет отправка - сразу отправляем письмо о событии
             return $this->eventEmail();
         }
+        // Если же событие не анонимное - отправляет пользователю, создавшему его отдельное уведомление
         /** @var \App\User $notifiable */
         return $notifiable->id === $this->event['created_by'] ? $this->emailToCreator() : $this->eventEmail();
     }
@@ -65,7 +73,17 @@ abstract class EventNotification extends Notification implements ShouldQueue
         ];
     }
 
+    /**
+     * Возвращает письмо с информацией о действии над событием.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     abstract public function eventEmail();
 
+    /**
+     * Возвращает письмо для пользователя, создавшего событие.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     abstract public function emailToCreator();
 }

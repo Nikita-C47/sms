@@ -5,8 +5,17 @@ namespace App\Notifications;
 use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Класс, представляющий уведомление об обновлении события.
+ * @package App\Notifications Уведомления приложения.
+ */
 class EventUpdatedNotification extends EventNotification
 {
+    /**
+     * Возвращает письмо с информацией о действии над событием.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     public function eventEmail()
     {
         return (new MailMessage)
@@ -23,6 +32,11 @@ class EventUpdatedNotification extends EventNotification
             ->line('Данное письмо было сгенерировано автоматически. Отвечать на него не нужно.');
     }
 
+    /**
+     * Возвращает письмо для пользователя, создавшего событие.
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
+     */
     public function emailToCreator()
     {
         return (new MailMessage)

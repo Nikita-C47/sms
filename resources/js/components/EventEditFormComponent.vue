@@ -473,10 +473,11 @@
 </template>
 
 <script>
+    // Импортируем нужные примеси
     import Helpers from './mixins/Helpers';
     import Validation from './mixins/Validation';
     import EventForm from './mixins/EventForm';
-
+    // Компонент формы редактирования события
     export default {
         name: "EventEditFormComponent",
         mixins:[
@@ -484,40 +485,68 @@
             Validation,
             EventForm
         ],
+        // Свойства
         props: {
+            // Событие
             event: Object,
         },
+        // Данные
         data: function () {
             return {
+                // Флаг того, что событие связано с рейсом
                 flight_connection: this.event.flight_id !== null,
+                // Данные формы
                 form_data: {
+                    // Рейс
                     flight_id: this.emptyOrValue(this.event.flight_id),
+                    // Где произошло
                     airport: this.emptyOrValue(this.event.airport),
+                    // Инициатор
                     initiator: this.emptyOrValue(this.event.initiator),
+                    // К чему относится
                     relation_id: this.emptyOrValue(this.event.relation_id),
+                    // Подразделение
                     department_id: this.emptyOrValue(this.event.department_id),
+                    // Категория
                     category_id: this.emptyOrValue(this.event.category_id),
+                    // Статус одобрения
                     approved: "",
+                    // Тип
                     type_id: this.emptyOrValue(this.event.type_id),
+                    // Вложения
                     attachments: this.event.attachments,
+                    // Сообщение
                     message: this.event.message,
+                    // Комментарий
                     commentary: this.emptyOrValue(this.event.commentary),
+                    // Статус
                     status: this.event.status,
+                    // Выявленная причина
                     reason: this.emptyOrValue(this.event.reason),
+                    // Принятое решение
                     decision: this.emptyOrValue(this.event.decision),
+                    // Ответственные подразделения
                     responsible_departments: [],
+                    // Мероприятия
                     measures: [],
                 },
+                // Удаленные вложения
                 removed_attachments: [],
+                // Добавленные мероприятия
                 added_measures: [],
+                // Текст добавляемого мероприятия
                 measure_text: "",
+                // Удаленные мероприятия
                 removed_measures: []
             };
         },
+        // Методы
         methods: {
+            // Проверка того, что мероприятие удалено
             measureRemoved: function(id) {
                 return _.includes(this.removed_measures, id);
             },
+            // Добавление мероприятия
             addMeasure: function() {
                 this.added_measures.push({
                     text: this.measure_text
@@ -525,6 +554,7 @@
                 this.measure_text = "";
                 $("#addMeasureModal").modal('hide');
             },
+            // Удаление мероприятия
             removeMeasure: function(index, existing) {
                 if(existing) {
                     this.removed_measures.push(index);
@@ -532,22 +562,28 @@
                     this.added_measures.splice(index, 1);
                 }
             },
+            // Восстановление мероприятия
             restoreMeasure: function(id) {
                 var index = _.indexOf(this.removed_measures, id);
                 this.removed_measures.splice(index, 1);
             },
+            // Проверка того, что вложение удалено
             attachmentRemoved: function(id) {
                 return _.includes(this.removed_attachments, id);
             },
+            // Удаление вложения
             removeAttachment: function(id) {
                 this.removed_attachments.push(id);
             },
+            // Восстановление вложения
             restoreAttachment: function(id) {
                 var index = _.indexOf(this.removed_attachments, id);
                 this.removed_attachments.splice(index, 1);
             },
         },
+        // Хук монтирования компонента
         mounted() {
+            // Инициализируем дату
             $("#date").datepicker({
                 language: "ru",
                 maxDate: new Date(),
@@ -560,19 +596,22 @@
                     this.unsetErrorField('date');
                 }
             }).data('datepicker').selectDate(new Date(this.event.date));
-
+            // Если событие связано с рейсом
             if(this.event.flight_id !== null) {
+                // Добавляем рейс к рейсам
                 this.flights.push(this.event.flight);
+                // Добавляем аэропорты рейса к аэропортам
                 this.airports.push(this.event.flight.departure_airport, this.event.flight.arrival_airport);
             }
+            // Если указано подразделение - загружаем категории
             if(this.form_data.department_id !== null) {
                 this.updateCategories();
             }
-
+            // Проставляем статус одобрения события
             if(this.event.approved !== null) {
                 this.form_data.approved = this.event.approved ? 1 : 0;
             }
-
+            // Инициализируем дату устранения события
             var fix_date = $("#fix_date").datepicker({
                 language: "ru",
                 minDate: new Date(this.event.date),
@@ -585,17 +624,16 @@
                     this.unsetErrorField('fix_date');
                 }
             });
-
+            // Устанавливаем дату, если она выбрана
             if(this.event.fix_date !== null) {
                 fix_date.data('datepicker').selectDate(new Date(this.event.fix_date));
             }
-
+            // Заполняем ответственные подразделения
             _.forEach(this.event.responsible_departments, department => {
                 this.form_data.responsible_departments.push(department.id);
             });
-
+            // Заполняем мероприятия
             var measureIndex = 1;
-
             _.forEach(this.event.measures, measure => {
                 var date = moment(measure.created_at);
                 this.form_data.measures.push({
@@ -607,8 +645,6 @@
                 });
                 measureIndex++;
             });
-
-            console.log(this.event);
         }
     }
 </script>

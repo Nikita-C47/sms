@@ -9,27 +9,27 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Класс, представляющий собой событие обработки пользователем события на рейсе.
+ * @package App\Events Кастомные события приложения.
+ */
 class EventProcessed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    /**
-     * @var Event
-     */
+    /** @var Event $event событие на рейсе, которое было обработано. */
     public $event;
-    /**
-     * @var \App\User
-     */
+    /** @var \App\User пользователь, обработавший событие. */
     public $user;
 
     /**
-     * Create a new event instance.
+     * Создает новый экземпляр класса.
      *
-     * @param Event $event
-     * @param Authenticatable $user
+     * @param Event $event событие.
+     * @param Authenticatable $user пользователь.
      */
     public function __construct(Event $event, Authenticatable $user)
     {
-        //
+        // Инициализируем поля
         $this->event = $event;
         $this->user = $user;
     }

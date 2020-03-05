@@ -53,7 +53,7 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
-
+        // Канал логирования для записи пользовательских действий
         'user_actions' => [
             'driver' => 'daily',
             'path' => storage_path('logs/user_actions.log'),

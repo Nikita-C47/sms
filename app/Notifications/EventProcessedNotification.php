@@ -7,21 +7,27 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * Класс, представляющий уведомление об обработке события.
+ * @package App\Notifications Уведомления приложения.
+ */
 class EventProcessedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-
+    /** @var array $event массив с информацией о событии. */
     protected $event;
+    /** @var array $user массив с информацией о пользователе. */
     protected $user;
 
     /**
-     * Create a new notification instance.
+     * Создает новый экземпляр класса.
      *
-     * @param array $event
-     * @param array $user
+     * @param array $event событие.
+     * @param array $user пользователь.
      */
     public function __construct(array $event, array $user)
     {
+        // Инициализируем поля
         $this->event = $event;
         $this->user = $user;
     }
@@ -38,10 +44,10 @@ class EventProcessedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Возвращает представление уведомления в виде email.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param mixed $notifiable уведомляемый объект.
+     * @return \Illuminate\Notifications\Messages\MailMessage email-сообщение для отправки.
      */
     public function toMail($notifiable)
     {

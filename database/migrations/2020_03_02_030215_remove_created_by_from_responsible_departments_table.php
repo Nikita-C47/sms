@@ -4,10 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Класс, представляющий миграцию удаления поля добавившего пользователя из таблицы ответственных подразделений.
+ */
 class RemoveCreatedByFromResponsibleDepartmentsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Запускает миграцию.
      *
      * @return void
      */
@@ -20,7 +23,7 @@ class RemoveCreatedByFromResponsibleDepartmentsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Откатывает миграцию.
      *
      * @return void
      */

@@ -7,17 +7,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+/**
+ * Класс, представляющий консольную команду генерации api-пользователя для приложения.
+ * @package App\Console\Commands Консольные команды приложения.
+ */
 class ApiUserGenerate extends Command
 {
     /**
-     * The name and signature of the console command.
+     *  Название и сигнатура команды.
      *
      * @var string
      */
     protected $signature = 'api:generate';
 
     /**
-     * The console command description.
+     * Описание консольной команды.
      *
      * @var string
      */
@@ -34,25 +38,30 @@ class ApiUserGenerate extends Command
     }
 
     /**
-     * Execute the console command.
+     * Выполняет консольную команду.
      *
      * @return mixed
      */
     public function handle()
     {
+        // Генерируем токен
         $token = Str::random(32);
-
+        // Выдаем в консоль информацию
         $this->info("Checking if api user exists...");
+        // Проверяем, существует ли пользователь для api
         $user = User::service()->where('email', config('auth.api_user'))->first();
-
+        // Если да
         if(filled($user)) {
+            // Выдаем инфо
             $this->info('Api user founded. Updating token...');
+            // Обновляем его токен
             $user->fill([
                 'api_token' => hash('sha256', $token)
             ]);
+            // Сохраняем
             $user->save();
         } else {
-            $this->warn('Api user is not found. Api user was generated for application.');
+            // Если пользователя нет - создаем его
             $user = new User([
                 'email' => config('auth.api_user'),
                 'name' => 'Пользователь API',
@@ -61,8 +70,10 @@ class ApiUserGenerate extends Command
                 'service' => true,
                 'api_token' => hash('sha256', $token)
             ]);
+            // Выдаем предупреждение о том, что пользователь был создан
+            $this->warn('Api user is not found. Api user was generated for application.');
         }
-
+        // Пишем в консоли инфо о пользователе api
         $this->info("Api token for user is $token. User ID: ".$user->id);
 
         return 0;
