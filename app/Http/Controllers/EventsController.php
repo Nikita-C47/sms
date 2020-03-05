@@ -3,34 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Components\Helpers\EventFiltersHelper;
-use App\Events\EventProcessed;
-use App\Events\RDsAdded;
-use App\Events\RDsRemoved;
-use App\Http\Requests\EventFiltersFormRequest;
-use App\Http\Requests\Events\AnonymousEventFormRequest;
-use App\Http\Requests\Events\EventCategoriesFormRequest;
-use App\Http\Requests\Events\FindEventFormRequest;
-use App\Http\Requests\Events\FlightsFormRequest;
-use App\Http\Requests\Events\EventFormRequest;
-use App\Http\Requests\Events\ProcessEventFormRequest;
-use App\Models\Department;
-use App\Models\Events\Event;
-use App\Models\Events\EventAttachment;
-use App\Models\Events\EventCategory;
-use App\Models\Events\EventFilter;
-use App\Models\Events\EventMeasure;
-use App\Models\Events\EventRelation;
-use App\Models\Events\EventResponsibleDepartment;
-use App\Models\Events\EventType;
-use App\Models\Flight;
+use App\Events\{EventProcessed, RDsAdded, RDsRemoved};
+use App\Http\Requests\{EventFiltersFormRequest,
+    Events\AnonymousEventFormRequest,
+    Events\EventCategoriesFormRequest,
+    Events\FindEventFormRequest,
+    Events\FlightsFormRequest,
+    Events\EventFormRequest,
+    Events\ProcessEventFormRequest};
+use App\Models\{Department,
+    Events\Event,
+    Events\EventAttachment,
+    Events\EventCategory,
+    Events\EventFilter,
+    Events\EventMeasure,
+    Events\EventRelation,
+    Events\EventResponsibleDepartment,
+    Events\EventType,
+    Flight};
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, DB, Gate, Storage};
 
 class EventsController extends Controller
 {

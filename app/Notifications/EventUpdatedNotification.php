@@ -3,11 +3,7 @@
 namespace App\Notifications;
 
 use App\Components\Entities\EventNotification;
-use App\Models\Events\Event;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class EventUpdatedNotification extends EventNotification
 {

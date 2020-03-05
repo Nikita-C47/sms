@@ -6,8 +6,6 @@ use App\Events\EventProcessed;
 use App\Notifications\EventProcessedNotification;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 

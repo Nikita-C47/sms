@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryForDepartmentFormRequest;
 use App\Http\Requests\EventCategoryFormRequest;
 use App\Models\Department;
 use App\Models\Events\EventCategory;

@@ -11,9 +11,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use phpDocumentor\Reflection\Types\Self_;
-use phpDocumentor\Reflection\Types\Static_;
-use PhpParser\Node\Stmt\Catch_;
 
 /**
  * Класс, представляющий модель события

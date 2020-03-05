@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Components\Inherited;
 
 use Illuminate\Routing\ResponseFactory;

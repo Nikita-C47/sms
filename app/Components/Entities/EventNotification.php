@@ -2,13 +2,9 @@
 
 namespace App\Components\Entities;
 
-use App\Models\Events\Event;
-use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
 abstract class EventNotification extends Notification implements ShouldQueue
 {

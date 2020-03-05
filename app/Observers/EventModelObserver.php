@@ -3,16 +3,14 @@
 namespace App\Observers;
 
 use App\Models\Events\Event;
-use App\Notifications\EventDeletedNotification;
-use App\Notifications\EventDestroyedNotification;
-use App\Notifications\EventRestoredNotification;
-use App\Notifications\EventCreatedNotification;
-use App\Notifications\EventUpdatedNotification;
+use App\Notifications\{EventDeletedNotification,
+    EventDestroyedNotification,
+    EventRestoredNotification,
+    EventCreatedNotification,
+    EventUpdatedNotification};
 use App\User;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\{Auth, Log, Notification};
 
 class EventModelObserver
 {

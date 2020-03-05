@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Department;
-use App\Notifications\UserCredentialsNotification;
 use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;

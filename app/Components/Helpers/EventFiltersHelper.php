@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Components\Helpers;
-
 
 use App\Models\Events\EventFilter;
 use Illuminate\Support\Facades\Auth;

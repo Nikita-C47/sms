@@ -6,7 +6,7 @@ use App\Models\Events\EventAttachment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class EventAttachmentObserver
+class EventAttachmentModelObserver
 {
     /**
      * Handle the event attachment "created" event.

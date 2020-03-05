@@ -6,8 +6,8 @@ use App\Components\Inherited\CyrillicResponseFactory;
 use App\Models\Events\Event;
 use App\Models\Events\EventAttachment;
 use App\Models\Events\EventMeasure;
-use App\Observers\EventAttachmentObserver;
-use App\Observers\EventMeasureObserver;
+use App\Observers\EventAttachmentModelObserver;
+use App\Observers\EventMeasureModelObserver;
 use App\Observers\EventModelObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::observe(EventModelObserver::class);
-        EventMeasure::observe(EventMeasureObserver::class);
-        EventAttachment::observe(EventAttachmentObserver::class);
+        EventMeasure::observe(EventMeasureModelObserver::class);
+        EventAttachment::observe(EventAttachmentModelObserver::class);
     }
 }

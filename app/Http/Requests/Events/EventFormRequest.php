@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\Events;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Validator;
-use function foo\func;
 
 class EventFormRequest extends FormRequest
 {

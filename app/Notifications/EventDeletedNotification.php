@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Components\Entities\EventNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Auth;
 
 class EventDeletedNotification extends EventNotification
 {

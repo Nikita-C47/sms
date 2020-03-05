@@ -6,7 +6,7 @@ use App\Models\Events\EventMeasure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class EventMeasureObserver
+class EventMeasureModelObserver
 {
     /**
      * Handle the event measure "created" event.

@@ -3,9 +3,7 @@
 
 namespace App\Components\Entities;
 
-use App\Models\Events\Event;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 

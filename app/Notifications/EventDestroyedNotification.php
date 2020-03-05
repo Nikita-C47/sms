@@ -3,15 +3,7 @@
 namespace App\Notifications;
 
 use App\Components\Entities\EventNotification;
-use App\Models\Events\Event;
-use App\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class EventDestroyedNotification extends EventNotification
 {

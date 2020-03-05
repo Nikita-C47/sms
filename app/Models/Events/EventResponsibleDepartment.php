@@ -4,7 +4,6 @@
 namespace App\Models\Events;
 
 use App\Models\Department;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
