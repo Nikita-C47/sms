@@ -4,122 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "270d47d4ed7565adb7d11f737e0e1080",
+    "content-hash": "43bdb5304a6e4fd6cc7b55375a9b962c",
     "packages": [
-        {
-            "name": "blackfire/php-sdk",
-            "version": "v1.21.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/blackfireio/php-sdk.git",
-                "reference": "1aa41771641ac268c5a2a0fc520e0da0e1f6698a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/blackfireio/php-sdk/zipball/1aa41771641ac268c5a2a0fc520e0da0e1f6698a",
-                "reference": "1aa41771641ac268c5a2a0fc520e0da0e1f6698a",
-                "shasum": ""
-            },
-            "require": {
-                "composer/ca-bundle": "^1.0",
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "symfony/http-client": "^4.3"
-            },
-            "suggest": {
-                "ext-blackfire": "The C version of the Blackfire probe",
-                "ext-zlib": "To push config to remote profiling targets"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/autostart.php"
-                ],
-                "psr-4": {
-                    "Blackfire\\": "src/Blackfire"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Blackfire.io",
-                    "email": "support@blackfire.io"
-                }
-            ],
-            "description": "Blackfire.io PHP SDK",
-            "keywords": [
-                "performance",
-                "profiler",
-                "uprofiler",
-                "xhprof"
-            ],
-            "time": "2019-12-05T12:48:12+00:00"
-        },
-        {
-            "name": "composer/ca-bundle",
-            "version": "1.2.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/47fe531de31fca4a1b997f87308e7d7804348f7e",
-                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-openssl": "*",
-                "ext-pcre": "*",
-                "php": "^5.3.2 || ^7.0 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8",
-                "psr/log": "^1.0",
-                "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Composer\\CaBundle\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
-            "keywords": [
-                "cabundle",
-                "cacert",
-                "certificate",
-                "ssl",
-                "tls"
-            ],
-            "time": "2020-01-13T10:02:55+00:00"
-        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
@@ -822,31 +708,31 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.64",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0"
+                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d13c43dbd4b791f815215959105a008515d1a2e0",
-                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
+                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "php": ">=5.5.9"
+                "league/mime-type-detection": "^1.3",
+                "php": "^7.2.5 || ^8.0"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
             },
             "require-dev": {
-                "phpspec/phpspec": "^3.4",
-                "phpunit/phpunit": "^5.7.26"
+                "phpspec/prophecy": "^1.11.1",
+                "phpunit/phpunit": "^8.5.8"
             },
             "suggest": {
-                "ext-fileinfo": "Required for MimeType",
                 "ext-ftp": "Allows you to use FTP server storage",
                 "ext-openssl": "Allows you to use FTPS server storage",
                 "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
@@ -902,7 +788,73 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-02-05T18:14:17+00:00"
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem/issues",
+                "source": "https://github.com/thephpleague/flysystem/tree/1.1.4"
+            },
+            "funding": [
+                {
+                    "url": "https://offset.earth/frankdejonge",
+                    "type": "other"
+                }
+            ],
+            "time": "2021-06-23T21:56:05+00:00"
+        },
+        {
+            "name": "league/mime-type-detection",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/mime-type-detection.git",
+                "reference": "3b9dff8aaf7323590c1d2e443db701eb1f9aa0d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/3b9dff8aaf7323590c1d2e443db701eb1f9aa0d3",
+                "reference": "3b9dff8aaf7323590c1d2e443db701eb1f9aa0d3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.18",
+                "phpstan/phpstan": "^0.12.68",
+                "phpunit/phpunit": "^8.5.8 || ^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\MimeTypeDetection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Mime-type detection for Flysystem",
+            "support": {
+                "issues": "https://github.com/thephpleague/mime-type-detection/issues",
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.7.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/league/flysystem",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-01-18T20:58:21+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5209,5 +5161,6 @@
         "php": "^7.2",
         "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }
